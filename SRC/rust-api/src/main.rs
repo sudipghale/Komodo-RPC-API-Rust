@@ -1,5 +1,5 @@
 mod komodorpcutil;
-mod address;
+//mod address;
 use komodorpcutil::Auth;
 use komodorpcutil::KomodoRPC;
 
@@ -33,8 +33,7 @@ pub fn main() {
 	let method_name:String = String::from("getwalletinfo");
 	let method_body:String = String::from("[]");
 	let data:String = String::from (komodorpcutil::GenerateBody(someUser.clone(),method_name,method_body));
-	
-	let result = komodorpcutil::request( someUser.clone(), data);
+	komodorpcutil::request( someUser.clone(), data);
 
 
 

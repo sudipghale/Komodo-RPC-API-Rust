@@ -1,0 +1,12 @@
+C:\Users\jasmi\Documents\GitHub\Komodo-RPC-API-Rust\SRC\rust-api\target\debug\deps\cookie-8a801a9f9324fe8d.rmeta: C:\Users\jasmi\.cargo\registry\src\github.com-1ecc6299db9ec823\cookie-0.12.0\src\lib.rs C:\Users\jasmi\.cargo\registry\src\github.com-1ecc6299db9ec823\cookie-0.12.0\src\builder.rs C:\Users\jasmi\.cargo\registry\src\github.com-1ecc6299db9ec823\cookie-0.12.0\src\parse.rs C:\Users\jasmi\.cargo\registry\src\github.com-1ecc6299db9ec823\cookie-0.12.0\src\jar.rs C:\Users\jasmi\.cargo\registry\src\github.com-1ecc6299db9ec823\cookie-0.12.0\src\delta.rs C:\Users\jasmi\.cargo\registry\src\github.com-1ecc6299db9ec823\cookie-0.12.0\src\draft.rs
+
+C:\Users\jasmi\Documents\GitHub\Komodo-RPC-API-Rust\SRC\rust-api\target\debug\deps\libcookie-8a801a9f9324fe8d.rlib: C:\Users\jasmi\.cargo\registry\src\github.com-1ecc6299db9ec823\cookie-0.12.0\src\lib.rs C:\Users\jasmi\.cargo\registry\src\github.com-1ecc6299db9ec823\cookie-0.12.0\src\builder.rs C:\Users\jasmi\.cargo\registry\src\github.com-1ecc6299db9ec823\cookie-0.12.0\src\parse.rs C:\Users\jasmi\.cargo\registry\src\github.com-1ecc6299db9ec823\cookie-0.12.0\src\jar.rs C:\Users\jasmi\.cargo\registry\src\github.com-1ecc6299db9ec823\cookie-0.12.0\src\delta.rs C:\Users\jasmi\.cargo\registry\src\github.com-1ecc6299db9ec823\cookie-0.12.0\src\draft.rs
+
+C:\Users\jasmi\Documents\GitHub\Komodo-RPC-API-Rust\SRC\rust-api\target\debug\deps\cookie-8a801a9f9324fe8d.d: C:\Users\jasmi\.cargo\registry\src\github.com-1ecc6299db9ec823\cookie-0.12.0\src\lib.rs C:\Users\jasmi\.cargo\registry\src\github.com-1ecc6299db9ec823\cookie-0.12.0\src\builder.rs C:\Users\jasmi\.cargo\registry\src\github.com-1ecc6299db9ec823\cookie-0.12.0\src\parse.rs C:\Users\jasmi\.cargo\registry\src\github.com-1ecc6299db9ec823\cookie-0.12.0\src\jar.rs C:\Users\jasmi\.cargo\registry\src\github.com-1ecc6299db9ec823\cookie-0.12.0\src\delta.rs C:\Users\jasmi\.cargo\registry\src\github.com-1ecc6299db9ec823\cookie-0.12.0\src\draft.rs
+
+C:\Users\jasmi\.cargo\registry\src\github.com-1ecc6299db9ec823\cookie-0.12.0\src\lib.rs:
+C:\Users\jasmi\.cargo\registry\src\github.com-1ecc6299db9ec823\cookie-0.12.0\src\builder.rs:
+C:\Users\jasmi\.cargo\registry\src\github.com-1ecc6299db9ec823\cookie-0.12.0\src\parse.rs:
+C:\Users\jasmi\.cargo\registry\src\github.com-1ecc6299db9ec823\cookie-0.12.0\src\jar.rs:
+C:\Users\jasmi\.cargo\registry\src\github.com-1ecc6299db9ec823\cookie-0.12.0\src\delta.rs:
+C:\Users\jasmi\.cargo\registry\src\github.com-1ecc6299db9ec823\cookie-0.12.0\src\draft.rs:
