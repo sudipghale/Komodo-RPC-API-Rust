@@ -28,8 +28,11 @@ pub fn main() {
 
 
 //getblockchaininfo
- let blockchain_info= komodo::blockchain::get_blockchain_info(someUser);
-	
+//let blockchain_info= komodo::blockchain::get_blockchain_info(someUser);
+
+//getaddressbalance
+let get_address_balance=komodo::address::getaddressbalance(someUser,["RTTg3izdeVnqkTTxjzsPFrdUQexgqCy1qb",""]);
+
 
 
 
