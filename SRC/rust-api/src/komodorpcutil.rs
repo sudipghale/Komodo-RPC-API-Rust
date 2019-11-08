@@ -1,3 +1,5 @@
+
+
 extern crate reqwest;
 use reqwest::header::*;
 
@@ -11,29 +13,43 @@ pub struct KomodoRPC
 	req_method: String,
     rpc_username: String,
     rpc_password: String,
-	req_auth: Auth,
-	req_url: String,
-	req_headers: String,
 	json_rpc_ver: String,
     rpc_id: String
 	
 }
 
-// the structure for user Authentication, variables are private by default
-#[derive(Debug,Clone)]
-pub struct Auth
-{
-    rpc_username: String,
-    rpc_password: String
-}
 
-// constructor for KomodoRPC that initilizes given variables
 impl KomodoRPC
 {
+	pub fn default() -> KomodoRPC {
+        KomodoRPC {
+        /*
+		rpc_address: String::from("127.0.0.1"),
+        rpc_port: 7777,
+        req_method: String::from("POST"),
+        rpc_username:String::from(""),
+        rpc_password:String::from(""),
+        json_rpc_ver: String::from("1.0"),
+        rpc_id: String::from("curltest"),
+		*/
+		rpc_address: String::from("127.0.0.1"),
+        rpc_port: 8158,
+        req_method: String::from("POST"),
+        rpc_username:String::from("user2509089925"),
+        rpc_password:String::from("passf2e2f61a68e19ce65fe8211aa5d42163fb5c507c8d8d63dabd2c3f66c5358527eb"),
+        json_rpc_ver: String::from("1.0"),
+        rpc_id: String::from("curltest"),
+
+        }
+    }
 	
-	pub fn new(rpc_address: String, rpc_port: i32, req_method: String,
-    rpc_username: String, rpc_password: String, req_auth: Auth, req_url: String,
-	req_headers: String, json_rpc_ver: String, rpc_id: String) -> KomodoRPC
+	pub fn new(rpc_address: String, 
+	rpc_port: i32, 
+	req_method: String,
+    rpc_username: String, 
+	rpc_password: String,  
+	json_rpc_ver: String, 
+	rpc_id: String) -> KomodoRPC
 	{
 		
 		KomodoRPC
@@ -44,9 +60,6 @@ impl KomodoRPC
 			req_method: req_method,
 			rpc_username: rpc_username,
 			rpc_password: rpc_password,
-			req_auth: req_auth,
-			req_url: req_url,
-			req_headers: req_headers,
 			json_rpc_ver: json_rpc_ver,
 			rpc_id: rpc_id
 			
@@ -57,23 +70,24 @@ impl KomodoRPC
 	{
 		return self.rpc_address.to_string();
 	}
-	
-	pub fn GetHeader(&self) -> String
+
+	pub fn GetRPCId(&self) -> String
 	{
-		return self.req_headers.to_string();
+		return self.rpc_id.to_string();
 	}
+	
 	pub fn GetRequestURL(&self) -> String
 	{
-		return self.req_url.to_string();
+		return String::from(format!("http://{0}:{1}/", self.rpc_address, self.rpc_port));
 	}	
 	
 	pub fn GetUsername(&self) -> String
 	{
-		return self.req_auth.rpc_username.to_string();
+		return self.rpc_username.to_string();
 	}
 	pub fn GetPassword(&self) -> String
 	{
-		return self.req_auth.rpc_password.to_string();
+		return self.rpc_password.to_string();
 	}
 
 	pub fn GetRequestMetadata(&self) -> String
@@ -83,7 +97,7 @@ impl KomodoRPC
 	}
 	pub fn getJSONRPCver(&self) -> String
 	{
-		let temp_JSON_RPC_Ver: String = format!("{}",self.json_rpc_ver); // added String
+		let temp_JSON_RPC_Ver = format!("{}",self.json_rpc_ver);
 		return temp_JSON_RPC_Ver;
 	}
 
@@ -99,43 +113,26 @@ pub fn GenerateBody(SomeUser: KomodoRPC, method_name:String , method_parameter:S
 		body = body + &method + &paramater;
 		//body.push_str(method.to_string());
 		//body.push_str(paramater);
-		println!("THE BODY : {:?}",body);
+		//print!("{:?}",body);
 		return body;
 		
 	}
 
 
-// constructor for Auth that initilizes given variables
-
-impl Auth
-{
-	
-	pub fn new(username: String, password: String) -> Auth
-	{
-		
-		Auth
-		{
-			
-			rpc_username: username,
-			rpc_password: password
-			
-		}
-		
-	}
-	
-}
-
-
 
 pub fn request(SomeUser: KomodoRPC, body_input: String) -> Result<(), reqwest::Error> {
+
     
     let mut headers = HeaderMap::new();
-    headers.insert(CONTENT_TYPE, SomeUser.GetHeader().parse().unwrap());
+    headers.insert(CONTENT_TYPE, "text/plain;".parse().unwrap());
 
     // assume this is from the struc
-	let someJSONRPCVer = String::from(SomeUser.getJSONRPCver()); // no need String
-	let someRPCReqID = String::from("curltest");
+	let someJSONRPCVer = String::from(SomeUser.getJSONRPCver());
+	let someRPCReqID = String::from(SomeUser.GetRPCId());
 
+    let reqMeta = format!("\"jsonrpc\":\"{0}\", \"id\":\"{1}\"", someJSONRPCVer, someRPCReqID);
+    //                  "jsonrpc": "1.0", "id":"curltest"
+    //println!("\n\nthe value of asdf is: {}\n", reqMeta);
 	let  URL_POST= SomeUser.GetRequestURL();
 
 
@@ -143,9 +140,13 @@ pub fn request(SomeUser: KomodoRPC, body_input: String) -> Result<(), reqwest::E
         .post(&URL_POST)
         .basic_auth(SomeUser.GetUsername(), Some(SomeUser.GetPassword()))
         .headers(headers)
+        //.body("{\"jsonrpc\": \"1.0\", \"id\":\"curltest\", \"method\": \"getwalletinfo\", \"params\": [] }")
         .body(body_input)        
         .send()?
         .text()?;
-    println!("THE RESULT IS={:#?}", res);
+    println!("{}", res);
     Ok(())
 }
+
+
+
