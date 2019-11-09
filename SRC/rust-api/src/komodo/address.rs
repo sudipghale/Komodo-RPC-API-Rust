@@ -10,13 +10,13 @@ pub fn getaddressbalance(someUser: komodorpcutil::KomodoRPC,v_address:Vec<String
 let mut addr_list = String::from("[");
 
 for addr in &v_address{ 
-    addr_list = addr_list + "\"" + addr + "\"" ;//+ &","; //parsing error
+    addr_list = addr_list + "\"" + addr + "\"" + &","; //parsing error
 }
 
-if(v_address.len() >0)
+if(v_address.len() >0) // >1
 {
     // why need to cut last substring
-   // addr_list = addr_list.substring(0,(addr_list.len()-1));
+   addr_list = addr_list[0..(addr_list.len()-1)].to_string();
 }
 
 addr_list = addr_list + &"]"; //& for String -> &string
