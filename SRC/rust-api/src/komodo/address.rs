@@ -23,8 +23,8 @@ addr_list = addr_list + &"]"; //& for String -> &string
 
 let method_name:String = String::from("getaddressbalance");
 	let method_body:String = String::from(addr_list);
-	let data:String = String::from (komodorpcutil::GenerateBody(someUser.clone(),method_name,method_body));
-	
+	let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
+	println!("the body is{}",data );
 	let result = komodorpcutil::request( someUser.clone(), data);
     return result;
     
