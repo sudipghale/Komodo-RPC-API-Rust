@@ -23,7 +23,7 @@ pub fn main() {
 		let someUser = KomodoRPC::default();
 	let method_name:String = String::from("getblockchaininfo");
 	let method_body:String = String::from("[]");
-	let data:String = String::from (komodorpcutil::GenerateBody(someUser.clone(),method_name,method_body));
+	let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
 	
 	let result = komodorpcutil::request( someUser.clone(), data);
 	//}
