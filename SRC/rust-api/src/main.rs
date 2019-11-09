@@ -31,7 +31,7 @@ pub fn main() {
 //let blockchain_info= komodo::blockchain::get_blockchain_info(someUser);
 
 //getaddressbalance
-let get_address_balance=komodo::address::getaddressbalance(someUser,["RTTg3izdeVnqkTTxjzsPFrdUQexgqCy1qb",""]);
+let get_address_balance=komodo::address::getaddressbalance(someUser,["RTTg3izdeVnqkTTxjzsPFrdUQexgqCy1qb".to_string()].to_vec()); 
 
 
 
