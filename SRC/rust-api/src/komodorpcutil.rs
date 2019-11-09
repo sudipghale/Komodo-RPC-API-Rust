@@ -185,7 +185,7 @@ pub fn request(some_user: KomodoRPC, body_input: String) -> Result<(), reqwest::
         .body(body_input)        
         .send()?
         .text()?;
-    println!("{}", res);
+    println!("the result is{}", res);
     Ok(())
 	}
 	else
