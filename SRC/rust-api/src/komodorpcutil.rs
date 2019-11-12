@@ -149,7 +149,7 @@ impl KomodoRPC
 	 */
 pub fn generate_body(some_user: KomodoRPC, method_name:String , method_parameter:String) -> String
 	{
-		let method = format!("\"method\":\"{0}\",", method_name);
+		let method = format!("\"method\": \"{0}\", ", method_name);
 		let paramater = format! ("\"params\": {0} }}",method_parameter);
 	    let mut body:String = some_user.get_request_metadata();
 		body = body + &method + &paramater;

@@ -27,18 +27,23 @@ for addr in &v_address{
 
 if(v_address.len() >0) // >1
 {
-    // why need to cut last substring
-   addr_list = addr_list[0..(addr_list.len()-1)].to_string();
+
+   addr_list = addr_list[0..(addr_list.len()-1)].to_string(); // cutting the last ,
 }
 
 addr_list = addr_list + &"]"; //& for String -> &string
 
+let params = String::from("[{\"addresses\": ")+ &addr_list+ "}]"; 
+//let params = format!("[{\"addresses\": {0}}]", addr_list); //need to fix to use format
+
+
 //BODY HAS TO BE
-//"{\"jsonrpc\": \"1.0\", \"id\":\"curltest\", \"method\": \"getaddressbalance\", \"params\": [{\"addresses\": [\"RDymhC2RrTKEPmj3rpPUmXeXhJsrTktqbU\"]}] }
+let match_para = "{\"jsonrpc\": \"1.0\", \"id\":\"curltest\", \"method\": \"getaddressbalance\", \"params\": [{\"addresses\": [\"RDymhC2RrTKEPmj3rpPUmXeXhJsrTktqbU\"]}] }";
 let method_name:String = String::from("getaddressbalance");
-	let method_body:String = String::from(addr_list);
-	let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
-	println!("the body is{}",data );
+	let method_body:String = String::from(params);
+    let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
+    println!("match with:{:?}",match_para);
+	println!("the body is{:?}",data );
 	let result = komodorpcutil::request( someUser.clone(), data);
     return result;
     
