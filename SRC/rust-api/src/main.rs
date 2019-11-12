@@ -26,8 +26,10 @@ pub fn main() {
 //let blockchain_info= komodo::blockchain::get_blockchain_info(someUser);
 
 //getaddressbalance
-let get_address_balance=komodo::address::getaddressbalance(someUser,["RDymhC2RrTKEPmj3rpPUmXeXhJsrTktqbU".to_string()].to_vec()); 
+//let get_address_balance=komodo::address::getaddressbalance(someUser,["RDymhC2RrTKEPmj3rpPUmXeXhJsrTktqbU".to_string()].to_vec()); 
 
+//getaddressdeta
+let get_address_deltas=komodo::address::getaddressdeltas(someUser,["RDymhC2RrTKEPmj3rpPUmXeXhJsrTktqbU".to_string()].to_vec(),1,200,true);
 
 
 
