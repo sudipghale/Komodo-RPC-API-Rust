@@ -127,7 +127,6 @@ Name	    Type     	Description
 "prevtxid"	(string)	the previous txid (if spending)
 "prevout"	(string)	the previous transaction output index (if spending)
 
-
 */ 
 pub fn getaddressmempool(someUser: komodorpcutil::KomodoRPC,v_address:Vec<String>) -> Result<(), reqwest::Error> { 
 
@@ -157,4 +156,53 @@ pub fn getaddressmempool(someUser: komodorpcutil::KomodoRPC,v_address:Vec<String
         
     
     }
+/*
+#getaddresstxids
+getaddresstxids '{ "addresses" : [ "address" , ... ] }'
+
+The getaddresstxids method returns the txids for an address, or addresses. It requires addressindex to be enabled.
+
+# Arguments
+Name	    Type	    Description
+"address"	(string)	the address
+"start"	    (number)	the start block height
+"end"	    (number)	the end block height
+
+# Response
+Name	            Type	    Description
+"transaction_id"	(string)	the transaction id
+
+
+*/
+    pub fn getaddresstxids(someUser: komodorpcutil::KomodoRPC,v_address:Vec<String>, start:u32, end:u32) -> Result<(), reqwest::Error> { 
+
+        let mut addr_list = String::from("[");
+        
+        for addr in &v_address{ 
+            addr_list = addr_list + "\"" + addr + "\"" + &","; //parsing error
+        }
+        
+        if(v_address.len() >0) // >1
+        {
+            // why need to cut last substring
+           addr_list = addr_list[0..(addr_list.len()-1)].to_string();
+        }
+        
+        addr_list = addr_list + &"]"; //& for String -> &string
+    
+        let params = String::from("[{\"addresses\": ")+ &addr_list+ ",\"start\":" +&start.to_string()+ ",\"end\":" + &end.to_string() + "}]"; 
+    //let params = format!("[{\"addresses\": {0}}]", addr_list); //need to fix to use format
+    
+        let payload="{\"jsonrpc\": \"1.0\", \"id\":\"curltest\", \"method\": \"getaddresstxids\",\"params\": [{\"addresses\": [\"RG81GbnXb4rmASYuhgAdfUdFBVqyVbyhde\"],\"start\":1,\"end\":200}]}\n\n\n";
+        
+        let method_name:String = String::from("getaddressdeltas");
+            let method_body:String = String::from(params);
+            let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
+            println!("the payload is{}",payload);
+            println!("the body is{}",data );
+            let result = komodorpcutil::request( someUser.clone(), data);
+            return result;
+            
+        
+        }
  

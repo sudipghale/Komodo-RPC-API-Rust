@@ -29,7 +29,15 @@ pub fn main() {
 //let get_address_balance=komodo::address::getaddressbalance(someUser,["RDymhC2RrTKEPmj3rpPUmXeXhJsrTktqbU".to_string()].to_vec()); 
 
 //getaddressdeta
-let get_address_deltas=komodo::address::getaddressdeltas(someUser,["RDymhC2RrTKEPmj3rpPUmXeXhJsrTktqbU".to_string()].to_vec(),1,200,true);
+//let get_address_deltas=komodo::address::getaddressdeltas(someUser,["RDymhC2RrTKEPmj3rpPUmXeXhJsrTktqbU".to_string()].to_vec(),1,200,true);
+
+//getaddressmempool
+//let get_address_balance=komodo::address::getaddressmempool(someUser,["RDymhC2RrTKEPmj3rpPUmXeXhJsrTktqbU".to_string()].to_vec()); 
+
+//getaddresstxids
+let get_address_deltas=komodo::address::getaddresstxids(someUser,["RDymhC2RrTKEPmj3rpPUmXeXhJsrTktqbU".to_string()].to_vec(),1,200);
+
+
 
 
 
