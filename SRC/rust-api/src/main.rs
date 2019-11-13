@@ -41,7 +41,7 @@ pub fn main() {
 //let get_address_utxos=komodo::address::getaddressutxos(someUser,["RDymhC2RrTKEPmj3rpPUmXeXhJsrTktqbU".to_string()].to_vec(),true);
 
 //getsnapshot
-let get_snapshoot=komodo::address::getsnapshot(someUser,5);
+let get_snapshoot=komodo::address::getsnapshot(someUser,Some(5));
 
 
 

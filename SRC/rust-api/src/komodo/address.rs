@@ -101,7 +101,7 @@ let method_name:String = String::from("getaddressdeltas");
     let method_body:String = String::from(params);
     let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
     println!("the payload is{}",payload);
-    println!("the body is{}",data );
+    println!("the body is{:?}",data );
     let result = komodorpcutil::request( someUser.clone(), data);
     return result;
     
@@ -150,7 +150,7 @@ let method_name:String = String::from("getaddressmempool");
     let method_body:String = String::from(params);
     let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
     //  println!("the payload is{}",payload);
-    println!("the body is{}",data );
+    println!("the body is{:?}",data );
     let result = komodorpcutil::request( someUser.clone(), data);
     return result;
     
@@ -199,7 +199,7 @@ let method_name:String = String::from("getaddresstxids");
     let method_body:String = String::from(params);
     let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
     println!("the payload is{}",payload);
-    println!("the body is{}",data );
+    println!("the body is{:?}",data );
     let result = komodorpcutil::request( someUser.clone(), data);
     return result;
     
@@ -253,7 +253,7 @@ let method_name:String = String::from("getaddressutxos");
     let method_body:String = String::from(params);
     let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
     println!("the payload is{}",payload);
-    println!("the body is{}",data );
+    println!("the body is{:?}",data );
     let result = komodorpcutil::request( someUser.clone(), data);
     return result;
     
@@ -286,16 +286,30 @@ Name	            Type            	Description
 "end_time"	        (number)	        the unix epoch time snapshot finished
 
  */
-pub fn getsnapshot(someUser: komodorpcutil::KomodoRPC,top:u32) -> Result<(), reqwest::Error> { //TODO: need to implement optinal arg
+pub fn getsnapshot(someUser: komodorpcutil::KomodoRPC,top:Option<u32>) -> Result<(), reqwest::Error> { //TODO: need to implement optinal arg
+    let method_body:String;
+    let temp_top = top.unwrap_or(0); //Default value is 0
+    if (temp_top> 0)
+    {
+        method_body =String::from("[\"") + &temp_top.to_string()+ "\"]";// String::from(format!("[/"{0}/"]",temp_top));
+    }
+    else
+    {
+        method_body = String::from("[]");
+    }
 
-let params = String::from("[") + &top.to_string()+"]"; 
+//let params = String::from("[") + &top.to_string()+"]"; 
 
 
 let method_name:String = String::from("getsnapshot");
-let method_body:String = String::from(params);
+
+let payload = "{\"jsonrpc\": \"1.0\", \"id\":\"curltest\", \"method\": \"getsnapshot\", \"params\": [\"5\"] }\n\n\n";
+
+
 let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
 //println!("the payload is{}",payload);
-println!("the body is{}",data );
+println!("the payload is{:?}",payload);
+println!("the body is{:?}",data );
 let result = komodorpcutil::request( someUser.clone(), data);
 return result;
 
