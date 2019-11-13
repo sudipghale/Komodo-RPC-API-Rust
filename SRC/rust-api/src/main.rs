@@ -28,14 +28,20 @@ pub fn main() {
 //getaddressbalance
 //let get_address_balance=komodo::address::getaddressbalance(someUser,["RDymhC2RrTKEPmj3rpPUmXeXhJsrTktqbU".to_string()].to_vec()); 
 
-//getaddressdeta
+//getaddressdeltas
 //let get_address_deltas=komodo::address::getaddressdeltas(someUser,["RDymhC2RrTKEPmj3rpPUmXeXhJsrTktqbU".to_string()].to_vec(),1,200,true);
 
 //getaddressmempool
-//let get_address_balance=komodo::address::getaddressmempool(someUser,["RDymhC2RrTKEPmj3rpPUmXeXhJsrTktqbU".to_string()].to_vec()); 
+//let get_address_deltas=komodo::address::getaddressmempool(someUser,["RDymhC2RrTKEPmj3rpPUmXeXhJsrTktqbU".to_string()].to_vec()); 
 
 //getaddresstxids
-let get_address_deltas=komodo::address::getaddresstxids(someUser,["RDymhC2RrTKEPmj3rpPUmXeXhJsrTktqbU".to_string()].to_vec(),1,200);
+//let get_address_txids=komodo::address::getaddresstxids(someUser,["RDymhC2RrTKEPmj3rpPUmXeXhJsrTktqbU".to_string()].to_vec(),1,200);
+
+//getaddressutxos
+//let get_address_utxos=komodo::address::getaddressutxos(someUser,["RDymhC2RrTKEPmj3rpPUmXeXhJsrTktqbU".to_string()].to_vec(),true);
+
+//getsnapshot
+let get_snapshoot=komodo::address::getsnapshot(someUser,5);
 
 
 
