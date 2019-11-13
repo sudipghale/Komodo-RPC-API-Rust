@@ -41,8 +41,16 @@ pub fn main() {
 //let get_address_utxos=komodo::address::getaddressutxos(someUser,["RDymhC2RrTKEPmj3rpPUmXeXhJsrTktqbU".to_string()].to_vec(),true);
 
 //getsnapshot
-let get_snapshoot=komodo::address::getsnapshot(someUser,Some(5));
+//let get_snapshoot=komodo::address::getsnapshot(someUser,Some(5));
 
+//getinfo
+//let get_info=komodo::control::getinfo(someUser);
+
+//help
+//let help=komodo::control::help(someUser,Some("getaddressbalance".to_string()));
+
+//stop
+let stop=komodo::control::stop(someUser);
 
 
 
