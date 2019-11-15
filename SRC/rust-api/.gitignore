@@ -1,3 +1,4 @@
-target
-cargo.lock
-cargo.toml
+/target
+/cargo.lock
+/cargo.tom
+/komodo/address.rs
