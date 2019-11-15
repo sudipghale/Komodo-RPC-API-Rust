@@ -58,57 +58,7 @@ pub fn get_best_block_hash(
 }
 
 
-pub fn get_block(SomeUser: komodorpcutil::KomodoRPC, 
-				s: &(dyn Any),
-				verbose: Option<bool>) ->Result<(), reqwest::Error>
-{
-	let temp_verbose:bool = verbose.unwrap_or(false);
-	let method_name:String = String::from("getblock");
-	let method_body:String;
-	// if verbose is true
-	
-	let temp_first_argument :String;
-	// if there is an intended string value, convert it to use it
-	if let Some(string) = s.downcast_ref::<String>()
-	{
-		
-		println!("string: {0}", string);
-		temp_first_argument = string.to_string();
-	}
-	
-	// compiler assigns i32 by default for integers
-	// concerns:
-	// - potential overflow? its a signed value
-	// - limited by 32 bytes, the input from user might be longer(?)
-	else if let Some(num) = s.downcast_ref::<i32>()
-	{
-		//println!("Not a string... do height number things");
-		println!("num: {0}", num);
-		temp_first_argument = num.to_string();
-	}
-	else
-	{
-		println!("error");
-	}
-	
-	if temp_verbose
-	{
-		method_body = String::from("[\"")+
-		&temp_first_argument +
-		&String::from("\", true]");
-	} 
-	else
-	{
-		method_body = String::from("[\"")+
-		&temp_first_argument +
-		&String::from("\", false]");
-	}
-	
-	let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
-	let result =komodorpcutil::request( SomeUser.clone(), data);
-	return result;
-	
-}
+
 
 
 pub fn get_blockchain_info(
