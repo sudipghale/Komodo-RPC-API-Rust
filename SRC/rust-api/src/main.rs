@@ -1,6 +1,6 @@
+
 #![allow(non_snake_case)]
 #![allow(dead_code)]
-
 mod komodorpcutil;
 mod komodo;
 use komodorpcutil::KomodoRPC;
@@ -22,17 +22,14 @@ pub fn main() {
 	// CHECK TO SEE IF THERE IS USERNAME IS EMPTY???? TODO
 	
 	// Create KomodoRPC type (an 'object') with variables
-	//let someUser = KomodoRPC::new(someAddress, somePortNum, someReqMethod,someUserName, somePassword,someJSONRPCVer, someRPCReqID);
-
-	let someUser = KomodoRPC::default();
+	let someUser = KomodoRPC::new(someAddress, somePortNum, someReqMethod,someUserName, somePassword,someJSONRPCVer, someRPCReqID);
 
 
 //getblockchaininfo
 //let blockchain_info= komodo::blockchain::get_blockchain_info(someUser);
-let blockchain_coin_supply = komodo::blockchain::coin_supply(someUser,Some(100));
 
 //getaddressbalance
-//let get_address_balance=komodo::address::getaddressbalance(someUser,["RJ2j4HuHMERjY9kR81Kdo1KhCKV2dpPArs".to_string()].to_vec()); 
+let get_address_balance=komodo::address::getaddressbalance(someUser,["RJ2j4HuHMERjY9kR81Kdo1KhCKV2dpPArs".to_string()].to_vec()); 
 
 
 
