@@ -11,10 +11,10 @@ use komodorpcutil::KomodoRPC;
 pub fn main() {
     
     let someAddress = String::from("127.0.0.1");
-	let somePortNum = 15129;
+	let somePortNum = 8158;
 	let someReqMethod = String::from("POST");
-	let someUserName = String::from("user1147343206");
-	let somePassword = String::from("passbdbf70f00570bde257e25cf4c3a6b16d903b5aed84486c337d66379449f4963b62");
+	let someUserName = String::from("user2509089925");
+	let somePassword = String::from("passf2e2f61a68e19ce65fe8211aa5d42163fb5c507c8d8d63dabd2c3f66c5358527eb");
 	let someJSONRPCVer = String::from("1.0");
 	let someRPCReqID = String::from("curltest");
 	
