@@ -1,7 +1,7 @@
 use super:: komodorpcutil;
 use komodorpcutil::KomodoRPC;
-
 use std::any::Any;
+
 
 
 //getblockchaininfo
@@ -60,56 +60,34 @@ pub fn get_best_block_hash(
 
 
 pub fn get_block(SomeUser: komodorpcutil::KomodoRPC, 
-				s: &(dyn Any),
-				verbose: Option<bool>) ->Result<(), reqwest::Error>
+	height_or_hash: String,
+	verbose: Option<bool>) ->Result<(), reqwest::Error>
 {
-	let temp_verbose:bool = verbose.unwrap_or(false);
-	let method_name:String = String::from("getblock");
-	let method_body:String;
-	// if verbose is true
-	
-	let temp_first_argument :String;
-	// if there is an intended string value, convert it to use it
-	if let Some(string) = s.downcast_ref::<String>()
-	{
-		
-		println!("string: {0}", string);
-		temp_first_argument = string.to_string();
-	}
-	
-	// compiler assigns i32 by default for integers
-	// concerns:
-	// - potential overflow? its a signed value
-	// - limited by 32 bytes, the input from user might be longer(?)
-	else if let Some(num) = s.downcast_ref::<i32>()
-	{
-		//println!("Not a string... do height number things");
-		println!("num: {0}", num);
-		temp_first_argument = num.to_string();
-	}
-	else
-	{
-		println!("error");
-	}
-	
-	if temp_verbose
-	{
-		method_body = String::from("[\"")+
-		&temp_first_argument +
-		&String::from("\", true]");
-	} 
-	else
-	{
-		method_body = String::from("[\"")+
-		&temp_first_argument +
-		&String::from("\", false]");
-	}
-	
-	let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
-	let result =komodorpcutil::request( SomeUser.clone(), data);
-	return result;
-	
+let temp_verbose:bool = verbose.unwrap_or(false);
+let method_name:String = String::from("getblock");
+let method_body: String;
+// if verbose is true
+
+if temp_verbose
+{
+method_body = String::from("[\"")+
+&height_or_hash +
+&String::from("\", true]");
+} 
+else
+{
+method_body = String::from("[\"")+
+&height_or_hash +
+&String::from("\", false]");
 }
+
+let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
+let result =komodorpcutil::request( SomeUser.clone(), data);
+return result;
+
+}
+
+
 
 
 pub fn get_blockchain_info(
@@ -322,14 +300,108 @@ pub fn get_tx_out_proof(
 	{
 		method_body = String::from("[\"txid\": \"") + 
 		&tx_id.to_string()+ &String::from(" \", \"blockhash\" : ") + 
-		&block_hash.to_string() + &String::from(" ]");
+		&temp_block_hash.to_string() + &String::from(" ]");
 
 	}
 	else 
 	{
-
+		method_body = String::from("[\"txid\": \"") + 
+		&tx_id.to_string()+ 
+		&String::from(" \"]");
 	}
     let method_name:String = String::from("getchaintxout");
+	let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
+	let result =komodorpcutil::request( SomeUser.clone(), data);
+    return result;
+}
+
+
+pub fn tx_out_set_info(
+	SomeUser: komodorpcutil::KomodoRPC) 
+	->Result<(), reqwest::Error>
+{
+    let method_name:String = String::from("gettxoutsetinfo");
+	let method_body:String = String::from("[]");
+	let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
+	let result =komodorpcutil::request( SomeUser.clone(), data);
+    return result;
+}
+
+
+
+pub fn kv_search(
+	SomeUser: komodorpcutil::KomodoRPC,
+	key:String) 
+	->Result<(), reqwest::Error>
+{
+    let method_name:String = String::from("kvsearch");
+	let method_body:String = String::from("[\"") 
+	+ &key.to_string()+ &String::from("\"]");
+	let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
+	let result =komodorpcutil::request( SomeUser.clone(), data);
+    return result;
+}
+
+pub fn kv_update(
+	SomeUser: komodorpcutil::KomodoRPC,
+	key:String,
+	value: String,
+	days: u32,
+	pass_phrase: Option<String>) 
+	->Result<(), reqwest::Error>
+{
+/*
+Arguments
+Name	Type	Description
+"key"	(string, required)	key (should be unique)
+"value"	(string, required)	value
+"days"	(numeric, required)	amount of days before the key expires (1440 blocks/day); minimum 1 day
+"passphrase"	(string, optional)	passphrase required to update this key
+*/
+//"params": ["examplekey", "examplevalue", "2", "examplepassphrase"]
+    let method_name:String = String::from("kvupdate");
+	let method_body:String;
+	let temp_pass_phrase:String = pass_phrase.unwrap_or("".to_string());
+	if ( temp_pass_phrase.is_empty())
+	{
+		method_body = String::from("[\"") +
+		&key.to_string() + 
+		&String::from("\", \"")+
+		&value.to_string() +
+		&String::from("\", \"")+
+		&days.to_string()+
+		&String::from("\"]");
+
+	}
+	else
+	{
+		method_body = String::from("[\"") +
+		&key.to_string() + 
+		&String::from("\", \"")+
+		&value.to_string() +
+		&String::from("\", \"")+
+		&days.to_string()+
+		&String::from("\", \"")+
+		&pass_phrase.to_string()+
+		&String::from("\"]")
+
+	}
+	let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
+	let result =komodorpcutil::request( SomeUser.clone(), data);
+    return result;
+}
+
+
+
+
+pub fn verify_tx_out_proof(
+	SomeUser: komodorpcutil::KomodoRPC,
+	proof_string:String) 
+	->Result<(), reqwest::Error>
+{
+    let method_name:String = String::from("verifytxoutproof");
+	let method_body:String = String::from("[\"") 
+	+ &proof_string.to_string()+ &String::from("\"]");
 	let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
 	let result =komodorpcutil::request( SomeUser.clone(), data);
     return result;
