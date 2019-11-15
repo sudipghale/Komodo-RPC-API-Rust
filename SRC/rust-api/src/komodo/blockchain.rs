@@ -1,4 +1,4 @@
-use super:: komodorpcutil;
+/*use super:: komodorpcutil;
 use komodorpcutil::KomodoRPC;
 
 
@@ -280,3 +280,5 @@ pub fn get_tx_out_proof(
 	let result =komodorpcutil::request( SomeUser.clone(), data);
     return result;
 }
+
+*/

@@ -64,7 +64,21 @@ pub fn main() {
 //let get_address_balance=komodo::address::getaddressbalance(someUser,["RJ2j4HuHMERjY9kR81Kdo1KhCKV2dpPArs".to_string()].to_vec());
 
  //z_validatepaymentdisclosure
- let reuslt= komodo::disclosure::z_validate_payment_disclosure(someUser,"zpd:706462ff004c561a0447ba2ec51184e6c20".to_string());
+ //let reuslt= komodo::disclosure::z_validate_payment_disclosure(someUser,"zpd:706462ff004c561a0447ba2ec51184e6c20".to_string());
+
+ //generate
+ //let result = komodo::generate::generate(someUser,2);
+
+  //get_generate
+  //let result = komodo::generate::get_generate(someUser);
+
+   //get_generate 
+   //let result = komodo::generate::set_generate(someUser,true,Some(4)); //test1
+   //let result = komodo::generate::set_generate(someUser,true,None); //test2
+	// let result = komodo::generate::set_generate(someUser,true,None); //test3
+	 //let result = komodo::generate::set_generate(someUser,false,None); //test4
+
+
 
 
 
