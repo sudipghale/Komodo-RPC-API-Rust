@@ -1,4 +1,4 @@
-target/
+/SRC/target/
 Cargo.lock
 LICENSE
 README.md
