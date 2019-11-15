@@ -1,6 +1,7 @@
 use super:: komodorpcutil;
 use komodorpcutil::KomodoRPC;
 
+use std::any::Any;
 
 
 //getblockchaininfo
