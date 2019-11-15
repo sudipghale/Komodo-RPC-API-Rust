@@ -17,7 +17,7 @@ Name	    Type	     Description
 "balance"	(number)	the current confirmed balance in satoshis
 "received"	(number)	the total confirmed number of satoshis received (including change)
 */
-pub fn getaddressbalance(someUser: komodorpcutil::KomodoRPC,v_address:Vec<String>) -> Result<(), reqwest::Error> {      // implement for vec of addrs
+pub fn get_address_balance(someUser: komodorpcutil::KomodoRPC,v_address:Vec<String>) -> Result<(), reqwest::Error> {      // implement for vec of addrs
 
 let mut addr_list = String::from("[");
 
@@ -38,7 +38,7 @@ let params = String::from("[{\"addresses\": ")+ &addr_list+ "}]";
 
 
 //BODY HAS TO BE
-let payload= "{\"jsonrpc\": \"1.0\", \"id\":\"curltest\", \"method\": \"getaddressbalance\", \"params\": [{\"addresses\": [\"RDymhC2RrTKEPmj3rpPUmXeXhJsrTktqbU\"]}] }";
+let payload= "{\"jsonrpc\": \"1.0\", \"id\":\"curltest\", \"method\": \"getaddressbalance\", \"params\": [{\"addresses\": [\"RFK5paVBsRdpdzc9wDYuNxAhmz61668Npr\"]}] }";
 let method_name:String = String::from("getaddressbalance");
 	let method_body:String = String::from(params);
     let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
@@ -76,7 +76,7 @@ Name	    Type	    Description
 "address"	(string)	the address
 
 */ 
-pub fn getaddressdeltas(someUser: komodorpcutil::KomodoRPC,v_address:Vec<String>, start:u32, end:u32,chainInfo:bool) -> Result<(), reqwest::Error> { 
+pub fn get_address_deltas(someUser: komodorpcutil::KomodoRPC,v_address:Vec<String>, start:u32, end:u32,chainInfo:bool) -> Result<(), reqwest::Error> { 
 
 let mut addr_list = String::from("[");
 
@@ -128,7 +128,7 @@ Name	    Type     	Description
 "prevout"	(string)	the previous transaction output index (if spending)
 
 */ 
-pub fn getaddressmempool(someUser: komodorpcutil::KomodoRPC,v_address:Vec<String>) -> Result<(), reqwest::Error> { 
+pub fn get_address_mem_pool(someUser: komodorpcutil::KomodoRPC,v_address:Vec<String>) -> Result<(), reqwest::Error> { 
 
 let mut addr_list = String::from("[");
 
@@ -174,7 +174,7 @@ Name	            Type	    Description
 
 
 */
-pub fn getaddresstxids(someUser: komodorpcutil::KomodoRPC,v_address:Vec<String>, start:u32, end:u32) -> Result<(), reqwest::Error> { 
+pub fn get_address_tx_ids(someUser: komodorpcutil::KomodoRPC,v_address:Vec<String>, start:u32, end:u32) -> Result<(), reqwest::Error> { 
 
 let mut addr_list = String::from("[");
 
@@ -228,7 +228,7 @@ Name	        Type     	Description
         
         */
 
-pub fn getaddressutxos(someUser: komodorpcutil::KomodoRPC,v_address:Vec<String>,chainInfo:bool) -> Result<(), reqwest::Error> { 
+pub fn get_address_utxos(someUser: komodorpcutil::KomodoRPC,v_address:Vec<String>,chainInfo:bool) -> Result<(), reqwest::Error> { 
 
 let mut addr_list = String::from("[");
 
@@ -286,7 +286,7 @@ Name	            Type            	Description
 "end_time"	        (number)	        the unix epoch time snapshot finished
 
  */
-pub fn getsnapshot(someUser: komodorpcutil::KomodoRPC,top:Option<u32>) -> Result<(), reqwest::Error> { //TODO: need to implement optinal arg
+pub fn get_snapshot(someUser: komodorpcutil::KomodoRPC,top:Option<u32>) -> Result<(), reqwest::Error> { //TODO: need to implement optinal arg
     let method_body:String;
     let temp_top = top.unwrap_or(0); //Default value is 0
     if (temp_top> 0)

@@ -34,7 +34,7 @@ Name	Type	Description
 "relayfee"	(numeric)	minimum relay fee for non-free transactions in COIN/kB
 "errors"	(string)	any error messages
 */
-pub fn getinfo(SomeUser: komodorpcutil::KomodoRPC) ->Result<(), reqwest::Error>
+pub fn get_info(SomeUser: komodorpcutil::KomodoRPC) ->Result<(), reqwest::Error>
 {
     let method_name:String = String::from("getinfo");
 	let method_body:String = String::from("[]");
