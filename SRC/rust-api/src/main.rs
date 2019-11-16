@@ -78,8 +78,44 @@ pub fn main() {
 	// let result = komodo::generate::set_generate(someUser,true,None); //test3
 	 //let result = komodo::generate::set_generate(someUser,false,None); //test4
 
+//addnode
+//let result= komodo::network::add_node(someUser,"1.1.1.1:8899".to_string(),"onetry".to_string());
 
+//clearbanned
+//let result= komodo::network::clear_banned(someUser);
+
+//disconnectnode
+//let result= komodo::network::disconnect_node(someUser,"1.1.1.1:8899".to_string());
+
+
+//getaddednodeinfo
+//let result= komodo::network::get_added_node_info(someUser,true,None);
+
+//getconnectioncount
+//let result= komodo::network::get_connection_count(someUser);
+
+//getdeprecationinfo
+//let result= komodo::network::get_deprecation_info(someUser);
+
+//getnettotals
+//let result= komodo::network::get_net_totals(someUser);
+
+//getnetworkinfo
+//let result= komodo::network::get_network_info(someUser);
+
+//getpeerinfo
+//let result= komodo::network::get_peer_info(someUser);
+
+//listbanned
+//let result= komodo::network::list_banned(someUser);
+
+//ping
+//let result= komodo::network::ping(someUser);
+
+//setban
+let result= komodo::network::set_ban(someUser,"1.1.1.1".to_string(),"add".to_string(), Some(86400), None);
 
 
 
 }
+

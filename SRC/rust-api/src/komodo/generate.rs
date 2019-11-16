@@ -90,7 +90,7 @@ Name	Type	Description
 	gen_proc_limit:Option<u32>) 
 	->Result<(), reqwest::Error>
 {
-	let mut method_body:String;
+	let method_body:String;
 	let temp_gen_proc_limit:String = gen_proc_limit.unwrap_or(1).to_string();// default -1///TO DO
     if (temp_gen_proc_limit.is_empty())
     {
