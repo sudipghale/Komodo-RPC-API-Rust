@@ -367,6 +367,7 @@ pub fn ping(someUser:komodorpcutil::KomodoRPC)-> Result<(),reqwest::Error>{
 }
 
 /**
+ * T0 DO , NOT FULLU IMPLEMENTED AND TESTED
  * setban
 setban "ip(/netmask)" "add|remove" (bantime) (absolute)
 

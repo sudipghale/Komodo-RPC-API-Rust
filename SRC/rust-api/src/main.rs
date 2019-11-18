@@ -113,8 +113,16 @@ pub fn main() {
 //let result= komodo::network::ping(someUser);
 
 //setban
-let result= komodo::network::set_ban(someUser,"1.1.1.1".to_string(),"add".to_string(), Some(86400), None);
+//let result= komodo::network::set_ban(someUser,"1.1.1.1".to_string(),"add".to_string(), Some(86400), None);
 
+//backupwallet
+//let result= komodo::wallet::backup_wallet(someUser,"mybackupdata".to_string());
+
+//dumpprivkey
+//let result= komodo::wallet::dump_priv_key(someUser,"smfslfnsfsdfdskj".to_string());
+
+//dumpwallet
+let result = komodo::wallet::dump_wallet(someUser,"filename".to_string());
 
 
 }
