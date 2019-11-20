@@ -122,8 +122,20 @@ pub fn main() {
 //let result= komodo::wallet::dump_priv_key(someUser,"smfslfnsfsdfdskj".to_string());
 
 //dumpwallet
-let result = komodo::wallet::dump_wallet(someUser,"filename".to_string());
+//let result = komodo::wallet::dump_wallet(someUser,"test".to_string());
 
+//encryptwallet
 
+//getaccount
+//let result= komodo::wallet::get_account(someUser, "RFK5paVBsRdpdzc9wDYuNxAhmz61668Npr".to_string());
+
+//getbalnace
+//let result= komodo::wallet::get_balance(someUser, Some(1),Some(false));
+
+//getnewaddress
+//let result= komodo::wallet::get_new_address(someUser);
+
+//getrawchangeaddress
+//let result= komodo::wallet::get_raw_change_address(someUser);
 }
 
