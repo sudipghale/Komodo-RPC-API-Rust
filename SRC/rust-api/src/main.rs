@@ -137,5 +137,11 @@ pub fn main() {
 
 //getrawchangeaddress
 //let result= komodo::wallet::get_raw_change_address(someUser);
+
+//getreceivebyaddress
+//let result= komodo::wallet::get_receive_by_address(someUser, "adkfksnfsdlfmlsdfsd".to_string(),None); //None
+
+//gettransaction;
+let result= komodo::wallet::get_transaction(someUser, "jdkfjdsfksdnfjdsf".to_string(), Some(true));
 }
 

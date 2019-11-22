@@ -261,10 +261,117 @@ getreceivedbyaddress "address" ( minconf )
 The getreceivedbyaddress method returns the total amount received by the given address in transactions with at least minconf confirmations.
 
 #Arguments
-Name	Type	Description
+Name    	Type	Description
 "address"	(string, required)	the address for transactions
-minconf	(numeric, optional, default=1)	only include transactions confirmed at least this many times
+minconf  	(numeric, optional, default=1)	only include transactions confirmed at least this many times
+
 #Response
-Name	Type	Description
+Name   	Type     	Description
 amount	(numeric)	the total amount of the relevant coin received at this address
 */
+
+pub fn get_receive_by_address(
+	SomeUser: komodorpcutil::KomodoRPC,
+	address:String,
+	min_conf:Option<u32>) 
+	->Result<(), reqwest::Error>
+{
+	let method_body:String;
+	let temp_min_conf:String = min_conf.unwrap_or(1).to_string();// default 1///TO DO
+    if (temp_min_conf.is_empty())
+    {
+		method_body = String::from("[\"") + &address.to_string()+ &String::from("\"")+ &String::from("]");
+    }
+    else//if (!temp_gen_proc_limit.is_empty())
+    {
+		method_body = String::from("[\"") + &address.to_string()+ &"\",".to_string()+ &temp_min_conf +&String::from("]");
+	}
+	
+    let payload =  "{\"jsonrpc\": \"1.0\", \"id\":\"curltest\",  \"method\": \"getreceivedbyaddress\", \"params\": [\"RJSDZjp7kjBNhHsbECDE1jwYNK7af41pZN\", 6] }\n";
+    let method_name:String = String::from("getreceivedbyaddress");
+    let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
+    println!("payload is {:?}", payload);
+    println!("the body is{:?}",data );
+	let result =komodorpcutil::request( SomeUser.clone(), data);
+    return result;
+}
+
+/*
+gettransaction
+gettransaction "txid" ( includeWatchonly )
+
+The gettransaction method queries detailed information about transaction txid. This command applies only to txid's that are in the user's local wallet.
+
+#Arguments
+Name	Type	Description
+"txid"	(string, required)	the transaction id
+"includeWatchonly"	(bool, optional, default=false)	whether to include watchonly addresses in the returned balance calculation and in the details[] returned values
+
+#Response
+Name	Type	Description
+"amount"	(numeric)	the transaction amount
+"confirmations"	(numeric)	a confirmation number that is aware of the dPoW security service
+"rawconfirmations"	(numeric)	the raw confirmations (number of blocks on top of this transaction's block)
+"blockhash"	(string)	the block hash
+"blockindex"	(numeric)	the block index
+"blocktime"	(numeric)	the time in seconds since epoch (1 Jan 1970 GMT)
+"txid"	(string)	the transaction id
+"time"	(numeric)	the transaction time in seconds since epoch (1 Jan 1970 GMT)
+"timereceived"	(numeric)	the time received in seconds since epoch (1 Jan 1970 GMT)
+"details" : [ ... ]	(array)	
+"account"	(string)	DEPRECATED the account name involved in the transaction; can be "" for the default account
+"address"	(string)	the address involved in the transaction
+"category"	(string)	the category - either send or receive
+"amount"	(numeric)	the amount
+"vout"	(numeric)	the vout value
+"vjoinsplit" : [ ... ]	(array of json objects)	
+"anchor"	(string)	merkle root of note commitment tree
+"nullifiers" : [ ... ]	(array of strings)	
+"hex"	(string)	
+"commitments" : [ ... ]	(array of strings)	
+"hex"	(string)	
+"macs" : [ ... ]	(array of strings)	
+"hex"	(string)	
+"vpub_old"	(numeric)	the amount removed from the transparent value pool
+"vpub_new"	(numeric)	the amount added to the transparent value pool
+"hex"	(string)	transaction data translated into hex
+*/
+pub fn get_transaction(
+	SomeUser: komodorpcutil::KomodoRPC,
+	tx_id: String,
+	include_watch_only:Option<bool>) 
+	->Result<(), reqwest::Error>
+{
+	let method_body:String;
+  let temp_include_watch_only:String = include_watch_only.unwrap_or(false).to_string();
+  method_body = String::from("[\"") + &tx_id.to_string()+ &String::from("\",")+&temp_include_watch_only+ &String::from("]");
+  let method_name:String = String::from("gettransaction");
+  let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
+  println!("the body is{:?}",data );
+	let result =komodorpcutil::request( SomeUser.clone(), data);
+  return result;
+}
+
+/*
+getunconfirmedbalance
+getunconfirmedbalance
+
+The getunconfirmedbalance method returns the server's total unconfirmed balance.
+
+#Arguments
+Name	Type	Description
+(none)		
+#Response
+Name	Type	Description
+(none)
+
+*/
+pub fn stop(SomeUser: komodorpcutil::KomodoRPC) ->Result<(), reqwest::Error>
+{
+    let method_name:String = String::from("stop");
+	let method_body:String = String::from("[]");
+	let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
+	let result =komodorpcutil::request( SomeUser.clone(), data);
+    return result;
+
+}
