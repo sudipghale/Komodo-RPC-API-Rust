@@ -142,6 +142,39 @@ pub fn main() {
 //let result= komodo::wallet::get_receive_by_address(someUser, "adkfksnfsdlfmlsdfsd".to_string(),None); //None
 
 //gettransaction;
-let result= komodo::wallet::get_transaction(someUser, "jdkfjdsfksdnfjdsf".to_string(), Some(true));
+//let result= komodo::wallet::get_transaction(someUser, "jdkfjdsfksdnfjdsf".to_string(), Some(true));
+//let result= komodo::wallet::get_transaction(someUser, "jdkfjdsfksdnfjdsf".to_string(), None);
+
+//getunconfirmedbalance
+//let result= komodo::wallet::get_unconfirmed_balance(someUser);
+
+//getwalletinfo
+//let result= komodo::wallet::get_wallet_info(someUser);
+
+//importaddress
+//let result= komodo::wallet::import_address(someUser,"sfdsjfjsdkdfjsdfkjds".to_string(), Some("testing".to_string()),None);
+//let result= komodo::wallet::import_address(someUser,"sfdsjfjsdkdfjsdfkjds".to_string(), Some("".to_string()),None);
+
+//importprivkey
+//let result= komodo::wallet::import_priv_key(someUser,"sfdsjfjsdkdfjsdfkjds".to_string(), Some("testing".to_string()),None);
+//let result= komodo::wallet::import_priv_key(someUser,"sfdsjfjsdkdfjsdfkjds".to_string(), Some("".to_string()),None); 	TODO: Json value error 
+
+//importwallet
+//let result=komodo::wallet::import_wallet(someUser, "filename".to_string());
+
+//keypoolrefill
+//let result=komodo::wallet::key_pool_refill(someUser,None);
+//let result=komodo::wallet::key_pool_refill(someUser,Some(5));
+
+
+//listaddressgroupings
+//let result=komodo::wallet::list_address_groupings(someUser);
+
+//lislockunspent
+//let result=komodo::wallet::list_lock_unspent(someUser);
+
+//listreceivedbyaddress
+let result=komodo::wallet::list_received_by_address(someUser,None,None,None);
+
 }
 

@@ -162,6 +162,7 @@ Name	Type	Description
 "account"	(string, optional)	DEPRECATED if provided, it MUST be set to the empty string "" or to the string "*"
 minconf	(numeric, optional, default=1)	only include transactions confirmed at least this many times
 includeWatchonly	(bool, optional, default=false)	also include balance in watchonly addresses (see importaddress)
+
 #Response
 Name	Type	Description
 amount	(numeric)	the total amount
@@ -366,12 +367,313 @@ Name	Type	Description
 (none)
 
 */
-pub fn stop(SomeUser: komodorpcutil::KomodoRPC) ->Result<(), reqwest::Error>
+pub fn get_unconfirmed_balance(SomeUser: komodorpcutil::KomodoRPC) ->Result<(), reqwest::Error>
 {
-    let method_name:String = String::from("stop");
+    let method_name:String = String::from("getunconfirmedbalance");
 	let method_body:String = String::from("[]");
 	let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
 	let result =komodorpcutil::request( SomeUser.clone(), data);
     return result;
 
 }
+
+/*
+getwalletinfo
+
+The getwalletinfo method returns an object containing various information about the wallet state.
+
+#Arguments
+Name	Type	Description
+(none)		
+#Response
+Name	Type	Description
+"walletversion"	(numeric)	the wallet version
+"balance"	(numeric)	the total confirmed balance of the wallet
+"unconfirmed_balance"	(numeric)	the total unconfirmed balance of the wallet
+"immature_balance"	(numeric)	the total immature balance of the wallet
+"txcount"	(numeric)	the total number of transactions in the wallet
+"keypoololdest"	(numeric)	the timestamp (seconds since GMT epoch) of the oldest pre-generated key in the key pool
+"keypoolsize"	(numeric)	how many new keys are pre-generated
+"unlocked_until"	(numeric)	the timestamp in seconds since epoch (midnight Jan 1 1970 GMT) that the wallet is unlocked for transfers, or 0 if the wallet is locked
+"paytxfee"	(numeric)	the transaction fee configuration, given as the relevant COIN per KB
+*/
+pub fn get_wallet_info(SomeUser: komodorpcutil::KomodoRPC) ->Result<(), reqwest::Error>
+{
+    let method_name:String = String::from("getwalletinfo");
+	let method_body:String = String::from("[]");
+	let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
+	let result =komodorpcutil::request( SomeUser.clone(), data);
+    return result;
+
+}
+
+/*
+importaddress
+importaddress "address" ( "label" rescan )
+
+The importaddress method adds an address or script (in hex) that can be watched as if it were in your wallet, although it cannot be used to spend.
+
+This call can take an increased amount of time to complete if rescan is true.
+
+#Arguments
+Name	Type	Description
+"address"	(string, required)	the address to watch
+"label"	(string, optional, default="")	an optional label
+rescan	(boolean, optional, default=true)	rescan the wallet for transactions
+
+#Response
+Name	Type	Description
+(none)
+*/
+pub fn import_address(  //TODO check def value and if conditions 
+  SomeUser: komodorpcutil::KomodoRPC,
+  address:String,
+  label:Option<String>,
+  rescan:Option<bool>)
+    ->Result<(), reqwest::Error>
+{
+    let method_body:String;
+    let temp_label:String = label.unwrap_or("".to_string()).to_string(); 
+    let temp_rescan:String = rescan.unwrap_or(true).to_string();
+
+    if(temp_label.is_empty())
+    {
+      method_body = String::from("[\"")+ &address+ &"\",".to_string()+ &temp_rescan+ &String::from("]");
+    }
+    else{
+      method_body = String::from("[\"")+ &address+ &"\",\"".to_string()+ &temp_label+&"\",".to_string()+ &temp_rescan+ &String::from("]");
+        }
+    let method_name:String = String::from("importaddress");
+    let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
+    let result =komodorpcutil::request( SomeUser.clone(), data);
+    return result;
+}
+/*
+importprivkey
+importkey "komodoprivkey" ( "label" rescan )
+
+The importprivkey method adds a private key to your wallet.
+
+This call can take minutes to complete if rescan is true.
+
+See also dumpprivkey.
+
+#Arguments
+Name	Type	Description
+"privkey"	(string, required)	the private key (see dumpprivkey)
+"label"	(string, optional, default="")	an optional label
+rescan	(boolean, optional, default=true)	rescan the wallet for transactions
+
+Response
+Name	Type	Description
+addresses	(string)	the public address
+
+*/
+pub fn import_priv_key(  //TODO check def value and if conditions 
+  SomeUser: komodorpcutil::KomodoRPC,
+  priv_key:String,
+  label:Option<String>,
+  rescan:Option<bool>)
+    ->Result<(), reqwest::Error>
+{
+    let method_body:String;
+    let temp_label:String = label.unwrap_or("".to_string()).to_string(); 
+    let temp_rescan:String = rescan.unwrap_or(true).to_string();
+
+    if(temp_label.is_empty())
+    {
+      method_body = String::from("[\"")+ &priv_key+ &"\",".to_string()+ &temp_rescan+ &String::from("]");
+    }
+    else{
+      method_body = String::from("[\"")+ &priv_key+ &"\",\"".to_string()+ &temp_label+&"\",".to_string()+ &temp_rescan+ &String::from("]");
+        }
+    let method_name:String = String::from("importprivkey");
+    let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
+    println!("the body is{:?}",data );
+
+    let result =komodorpcutil::request( SomeUser.clone(), data);
+    return result;
+}
+/*
+importwallet
+importwallet "filename"
+
+The importwallet method imports transparent-address keys from a wallet-dump file (see dumpwallet).
+
+#Arguments
+Name	Type	Description
+"filename"	(string, required)	the wallet file
+#Response
+Name	Type	Description
+(none)	*/
+
+pub fn import_wallet(someUser:komodorpcutil::KomodoRPC,file_name:String)-> Result<(),reqwest::Error>{
+
+  let params =String::from("[\"") + &file_name+ "\"]";
+
+      
+  let method_name:String = String::from("importwallet");
+      let method_body:String = String::from(params);
+      let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
+      println!("the body is{:?}",data );
+      let result = komodorpcutil::request( someUser.clone(), data);
+      return result;
+
+}
+
+/**
+ * keypoolrefill
+keypoolrefill ( newsize )
+
+The keypoolrefill method refills the keypool.
+
+#Arguments
+Name	Type	Description
+newsize	(numeric, optional, default=100)	the new keypool size
+#Response
+Name	Type	Description
+(none)		
+ * 
+ */
+
+pub fn key_pool_refill(
+	SomeUser: komodorpcutil::KomodoRPC,
+	new_size:Option<u32>) 
+	->Result<(), reqwest::Error>
+{
+	let method_body:String;
+  let temp_new_size:String = new_size.unwrap_or(100).to_string();
+  method_body = String::from("[") +&temp_new_size+ &String::from("]");
+  let method_name:String = String::from("keypoolrefill");
+  let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
+  println!("the body is{:?}",data );
+	let result =komodorpcutil::request( SomeUser.clone(), data);
+  return result;
+}
+
+/**
+ * listaddressgroupings
+listaddressgroupings
+
+The listaddressgroupings method lists groups of addresses which have had their common ownership made public by common use as inputs or as the resulting change in past transactions.
+
+#Arguments
+Name	Type	Description
+(none)		
+#Response
+Name	Type	Description
+"address",	(string)	the address
+amount,	(numeric)	the amount
+"account"	(string, optional)	(DEPRECATED) the account
+ * 
+ */
+pub fn list_address_groupings(SomeUser: komodorpcutil::KomodoRPC) ->Result<(), reqwest::Error>
+{
+    let method_name:String = String::from("listaddressgroupings");
+	let method_body:String = String::from("[]");
+	let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
+	let result =komodorpcutil::request( SomeUser.clone(), data);
+    return result;
+
+}
+
+/**
+ * listlockunspent
+listlockunspent
+
+The listlockunspent method returns a list of temporarily non-spendable outputs.
+
+See the lockunspent call to lock and unlock transactions for spending.
+
+#Arguments
+Name	Type	Description
+(none)		
+#Response
+Name	Type	Description
+"txid"	(string)	the transaction id locked
+"vout"	(numeric)	the vout value
+ */
+pub fn list_lock_unspent(SomeUser: komodorpcutil::KomodoRPC) ->Result<(), reqwest::Error>
+{
+    let method_name:String = String::from("listlockunspent");
+	let method_body:String = String::from("[]");
+	let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
+	let result =komodorpcutil::request( SomeUser.clone(), data);
+    return result;
+
+}
+
+/**
+ * listreceivedbyaddress
+listreceivedbyaddress ( minconf includeempty includeWatchonly)
+
+The listreceivedbyaddress method lists balances by receiving address.
+
+#Arguments
+Name	Type	Description
+minconf	(numeric, optional, default=1)	the minimum number of confirmations before payments are included
+includeempty	(numeric, optional, default=false)	whether to include addresses that haven't received any payments// TO DO must be bool
+includeWatchonly	(bool, optional, default=false)	whether to include watchonly addresses (see 'importaddress')
+#Response
+Name	Type	Description
+"involvesWatchonly"	(bool)	only returned if imported addresses were involved in transaction
+"address"	(string)	the receiving address
+"account"	(string)	DEPRECATED the account of the receiving address; the default account is ""
+"amount"	(numeric)	the total amount received by the address
+"confirmations"	(numeric)	a confirmation number that is aware of the dPoW security service
+"rawconfirmations"	(numeric)	the raw confirmations of the most recent transaction included (number of blocks on top of this transaction's block
+ */
+
+pub fn list_received_by_address(
+  SomeUser: komodorpcutil::KomodoRPC,
+  min_conf:Option<u32>,
+  include_empty:Option<bool>, 
+  include_watch_only:Option<bool>
+) 
+	->Result<(), reqwest::Error>
+{
+  let method_body:String;
+  let temp_min_conf:String = min_conf.unwrap_or(1).to_string();
+  let temp_include_empty:String = include_empty.unwrap_or(false).to_string();
+  let temp_include_watch_only:String = include_watch_only.unwrap_or(false).to_string();
+  
+  method_body = String::from("[") + &temp_min_conf+&String::from(",")+ &temp_include_empty+ &String::from(",")+&temp_include_watch_only+ &String::from("]");
+  let method_name:String = String::from("listreceivedbyaddress");
+  let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
+  println!("the body is{:?}",data );
+	let result =komodorpcutil::request( SomeUser.clone(), data);
+  return result;
+}
+
+/**
+ * listsinceblock
+listsinceblock ( "blockhash" target-confirmations includeWatchonly )
+
+The listsinceblock method queries all transactions in blocks since block blockhash, or all transactions if blockhash is omitted.
+
+#Arguments
+Name	Type	Description
+"blockhash"	(string, optional)	the block hash from which to list transactions
+target-confirmations	(numeric, optional)	the confirmations required (must be 1 or more)
+includeWatchonly	(bool, optional, default=false)	include transactions to watchonly addresses (see also 'importaddress')
+#Response
+Name	Type	Description
+"transactions":		
+"account"	(string)	DEPRECATED the account name associated with the transaction; will be "" for the default account
+"address"	(string)	the address of the transaction (not present for move transactions -- category = move)
+"category"	(string)	the transaction category; send has negative amounts, receive has positive amounts
+"amount"	(numeric)	the amount of the relevant currency -- negative for the send category, and for the move category for moves outbound. It is positive for the receive category, and for the move category for inbound funds.
+"vout"	(numeric)	the vout value
+"fee"	(numeric)	the amount of the fee; this value is negative and only available for the send category of transactions
+"confirmations"	(numeric)	a confirmation number that is aware of the dPoW security service
+"rawconfirmations"	(numeric)	the raw confirmations of the transaction; available for send and receive category of transactions (number of blocks on top of this transaction's block)
+"blockhash"	(string)	the block hash containing the transaction; available for the send and receive categories of transactions
+"blockindex"	(numeric)	the block index containing the transaction; available for the send and receive categories of transactions
+"blocktime"	(numeric)	the block time in seconds since epoch (1 Jan 1970 GMT)
+"txid"	(string)	the transaction id; available for send and receive categories of transactions
+"time"	(numeric)	the transaction time in seconds since epoch (Jan 1 1970 GMT)
+"timereceived"	(numeric)	the time received in seconds since epoch (Jan 1 1970 GMT); available for send and receive category of transactions
+"comment"	(string)	whether a comment is associated with the transaction
+"to"	(string)	whether a 'to' comment is associated with the transaction
+"lastblock"	(string)	the hash of the last block
+ */
