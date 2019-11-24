@@ -37,20 +37,20 @@ use komodorpcutil::KomodoRPC;
 
 /// The create_multisig method creates a multi-signature address with n signature(s) of m key(s) required. The method returns a json object with the address and redeemScript.
 /// 
-/// The ___ method ...
-/// 
 /// # Arguments
 /// 
-/// * `` - 
+/// * `number_required` - A required u32 that represents the number of required signatures out of the n key(s) or address(es).
+/// * `keys` - A required string that represents a json array of keys which are addresses or hex-encoded public keys.
 /// 
 /// # Response
 /// 
-/// * `` - 
+/// * `address` - The value of the new multisig address.
+/// * `redeemScript` - The string value of the hex-encoded redemption script.
 /// 
 /// # Examples
 /// ```
-/// 
-/// let result = komodo::cross_chain::_replace_this_with_a_method_(some_user, 
+/// TODO: Update examples
+/// let result = komodo::cross_chain::create_multisig(some_user, 
 ///                                                                    "string".to_string(),
 ///                                                                    number_u32, 
 ///                                                                    None);
@@ -59,21 +59,18 @@ use komodorpcutil::KomodoRPC;
 /// 
 pub fn create_multisig(
     some_user: komodorpcutil::KomodoRPC, 
-    symbol: String,
-    kmd_height: u32,
-    cc_id: u32)
+    number_required: u32,
+    keys: String)
     ->Result<(), reqwest::Error>
 {
     
-    let method_name: String = String::from("create_multisig");
+    let method_name: String = String::from("createmultisig");
     
     let method_body: String = String::from("[\"")
-                    + &symbol.to_string()
-                    + &String::from("\",\"")
-                    + &kmd_height.to_string()
-                    + &String::from("\",\"")
-                    + &cc_id.to_string()
-                    + &String::from("\"]");
+                    + &number_required.to_string()
+                    + &String::from("\",[\"")
+                    + &keys.to_string()
+                    + &String::from("\"]]");
     
     let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
     let result = komodorpcutil::request(some_user.clone(), data);
@@ -83,11 +80,21 @@ pub fn create_multisig(
 }
 
 pub fn decode_ccopret(
-    some_user: komodorpcutil::KomodoRPC)
+    some_user: komodorpcutil::KomodoRPC,
+    script_pub_key: String)
     ->Result<(), reqwest::Error>
 {
     
-    unimplemented!
+    let method_name: String = String::from("decodeccopret");
+    
+    let method_body: String = String::from("[\"")
+                    + &script_pub_key.to_string()
+                    + &String::from("\"]");
+    
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
+    
+    return result;
     
 }
 
