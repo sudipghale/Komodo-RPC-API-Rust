@@ -32,8 +32,8 @@
 //       - ? some_user parameter may be simplified further
 
 
-use super:: komodorpcutil;
-use komodorpcutil::KomodoRPC;
+use super::komodorpcutil;
+//use komodorpcutil::KomodoRPC;
 
 /// The create_multisig method creates a multi-signature address with n signature(s) of m key(s) required. The method returns a json object with the address and redeemScript.
 /// 
@@ -66,11 +66,11 @@ pub fn create_multisig(
     
     let method_name: String = String::from("createmultisig");
     
-    let method_body: String = String::from("[\"")
+    let method_body: String = String::from("[")
                     + &number_required.to_string()
-                    + &String::from("\",[\"")
+                    + &String::from(",")
                     + &keys.to_string()
-                    + &String::from("\"]]");
+                    + &String::from("]");
     
     let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
     let result = komodorpcutil::request(some_user.clone(), data);
@@ -101,73 +101,173 @@ pub fn decode_ccopret(
 
 
 pub fn estimate_fee(
-    some_user: komodorpcutil::KomodoRPC)
+    some_user: komodorpcutil::KomodoRPC,
+    n_blocks: u32)
     ->Result<(), reqwest::Error>
 {
     
-    unimplemented!();
+    let method_name: String = String::from("estimatefee");
+    
+    let method_body: String = String::from("[")
+                    + &n_blocks.to_string()
+                    + &String::from("]");
+    
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
+    
+    return result;
     
 }
+
+
 
 pub fn estimate_priority(
-    some_user: komodorpcutil::KomodoRPC)
+    some_user: komodorpcutil::KomodoRPC,
+    n_blocks: u32)
     ->Result<(), reqwest::Error>
 {
     
-    unimplemented!();
+    let method_name: String = String::from("estimatepriority");
+    
+    let method_body: String = String::from("[")
+                    + &n_blocks.to_string()
+                    + &String::from("]");
+    
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
+    
+    return result;
     
 }
+
+
 
 pub fn invalidate_block(
-    some_user: komodorpcutil::KomodoRPC)
+    some_user: komodorpcutil::KomodoRPC,
+    hash: String)
     ->Result<(), reqwest::Error>
 {
     
-    unimplemented!();
+    let method_name: String = String::from("invalidateblock");
+    
+    let method_body: String = String::from("[\"")
+                    + &hash.to_string()
+                    + &String::from("\"]");
+    
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
+    
+    return result;
     
 }
+
+
 
 pub fn reconsider_block(
-    some_user: komodorpcutil::KomodoRPC)
+    some_user: komodorpcutil::KomodoRPC,
+    hash: String)
     ->Result<(), reqwest::Error>
 {
     
-    unimplemented!();
+    let method_name: String = String::from("reconsiderblock");
+    
+    let method_body: String = String::from("[\"")
+                    + &hash.to_string()
+                    + &String::from("\"]");
+    
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
+    
+    return result;
     
 }
+
+
 
 pub fn tx_notarized_confirmed(
-    some_user: komodorpcutil::KomodoRPC)
+    some_user: komodorpcutil::KomodoRPC,
+    tx_id: String)
     ->Result<(), reqwest::Error>
 {
     
-    unimplemented!();
+    let method_name: String = String::from("txnotarizedconfirmed");
+    
+    let method_body: String = String::from("[\"")
+                    + &tx_id.to_string()
+                    + &String::from("\"]");
+    
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
+    
+    return result;
     
 }
+
+
 
 pub fn validate_address(
-    some_user: komodorpcutil::KomodoRPC)
+    some_user: komodorpcutil::KomodoRPC,
+    address: String)
     ->Result<(), reqwest::Error>
 {
     
-    unimplemented!();
+    let method_name: String = String::from("validateaddress");
+    
+    let method_body: String = String::from("[\"")
+                    + &address.to_string()
+                    + &String::from("\"]");
+    
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
+    
+    return result;
     
 }
+
 
 pub fn verify_message(
-    some_user: komodorpcutil::KomodoRPC)
+    some_user: komodorpcutil::KomodoRPC,
+    address: String,
+    signature: String,
+    message: String)
     ->Result<(), reqwest::Error>
 {
     
-    unimplemented!();
+    let method_name: String = String::from("verifymessage");
+    
+    let method_body: String = String::from("[\"")
+                    + &address.to_string()
+                    + &String::from("\",\"")
+                    + &signature.to_string()
+                    + &String::from("\",\"")
+                    + &message.to_string()
+                    + &String::from("\"]");
+    
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
+    
+    return result;
     
 }
 
+
+
 pub fn z_validate_address(
-    some_user: komodorpcutil::KomodoRPC)
+    some_user: komodorpcutil::KomodoRPC,
+    z_addr: String)
     ->Result<(), reqwest::Error>
 {
     
-    unimplemented!();
+    let method_name: String = String::from("z_validateaddress");
+    
+    let method_body: String = String::from("[\"")
+                    + &z_addr.to_string()
+                    + &String::from("\"]");
+    
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
+    
+    return result;
     
 }
+
