@@ -32,8 +32,8 @@
 //       - ? some_user parameter may be simplified further
 
 
-use super:: komodorpcutil;
-use komodorpcutil::KomodoRPC;
+use super::komodorpcutil;
+//use komodorpcutil::KomodoRPC;
 
 /// ?? The migrate_create_burn_transaction method creates a transaction burning a specific amount of 
 /// coins or tokens. This method also creates a payouts object which is later used to create an 
@@ -74,7 +74,7 @@ pub fn migrate_create_burn_transaction(
     some_user: komodorpcutil::KomodoRPC, 
     dest_chain: String,
     dest_address: String,
-    amount: u32,
+    amount: f64,
     token_id: Option<String>)
     ->Result<(), reqwest::Error>
 {
@@ -84,7 +84,7 @@ pub fn migrate_create_burn_transaction(
     let temp_token_id: String = token_id.unwrap_or("".to_string());
     
     // user provides token to migrate
-    if(!temp_token_id.is_empty())
+    if !temp_token_id.is_empty()
     {
         
         //method_body = format!("[\"{0}\",\"{1}\",\"{2}\",\"{3}\"]", dest_chain, dest_address, amount, temp_token_id);
@@ -92,9 +92,9 @@ pub fn migrate_create_burn_transaction(
                         + &dest_chain.to_string()
                         + &String::from("\",\"")
                         + &dest_address.to_string()
-                        + &String::from("\",\"")
+                        + &String::from("\",")
                         + &amount.to_string()
-                        + &String::from("\",\"")
+                        + &String::from(",\"")
                         + &temp_token_id.to_string()
                         + &String::from("\"]");
         
@@ -162,7 +162,7 @@ pub fn migrate_create_import_transaction(
                     + &payouts.to_string();
     
     // concatentate string for optional strings
-    if(!temp_notary_tx_id1.is_empty())
+    if !temp_notary_tx_id1.is_empty()
     {
         
         method_body = method_body
@@ -170,7 +170,7 @@ pub fn migrate_create_import_transaction(
                         + &temp_notary_tx_id1.to_string();
         
         // we want to build up the 'notary_tx_idN' parameter if it exists
-        if(!temp_notary_tx_idN.is_empty())
+        if !temp_notary_tx_idN.is_empty()
         {
             
             method_body = method_body
@@ -181,7 +181,7 @@ pub fn migrate_create_import_transaction(
         
     }
     
-    else if(!temp_notary_tx_idN.is_empty())
+    else if !temp_notary_tx_idN.is_empty()
     {
         
         method_body = method_body
@@ -213,7 +213,7 @@ pub fn migrate_complete_import_transaction(
     let mut method_body: String = String::from("[\"")
                     + &import_tx.to_string();
     
-    if(!temp_offset.is_empty())
+    if !temp_offset.is_empty()
     {
         
         method_body = method_body
@@ -275,7 +275,7 @@ pub fn migrate_create_notary_approval_transaction(
 pub fn self_import(
     some_user: komodorpcutil::KomodoRPC, 
     dest_address: String,
-    amount: u32)
+    amount: f64)
     ->Result<(), reqwest::Error>
 {
     
@@ -283,9 +283,9 @@ pub fn self_import(
     
     let method_body: String = String::from("[\"")
                     + &dest_address.to_string()
-                    + &String::from("\",\"")
+                    + &String::from("\",")
                     + &amount.to_string()
-                    + &String::from("\"]");
+                    + &String::from("]");
     
     let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
     let result = komodorpcutil::request(some_user.clone(), data);
@@ -360,6 +360,10 @@ pub fn asset_chain_proof(
     
 }
 
+// get_notarisations_for_block vs scan_notarisations_db
+//  both has a required numeric parameter,
+//  but get_notar... does not need quotes in param
+//  and scan_notar... does need quotes in param
 pub fn get_notarisations_for_block(
     some_user: komodorpcutil::KomodoRPC, 
     height: u32)
@@ -368,9 +372,9 @@ pub fn get_notarisations_for_block(
     
     let method_name: String = String::from("getNotarisationsForBlock");
     
-    let method_body: String = String::from("[\"")
+    let method_body: String = String::from("[")
                                 + &height.to_string()
-                                + &String::from("\"]");
+                                + &String::from("]");
     
     let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
     let result = komodorpcutil::request(some_user.clone(), data);
@@ -379,6 +383,7 @@ pub fn get_notarisations_for_block(
     
 }
 
+// TODO: Fix string parsing for not empty
 pub fn scan_notarisations_db(
     some_user: komodorpcutil::KomodoRPC, 
     block_height: u32,
@@ -394,7 +399,7 @@ pub fn scan_notarisations_db(
                     + &String::from("\",\"")
                     + &symbol.to_string();
     
-    if(!temp_blocks_limit.is_empty())
+    if !temp_blocks_limit.is_empty()
     {
         
         method_body = method_body
@@ -412,7 +417,7 @@ pub fn scan_notarisations_db(
     
 }
 
-// NOTE: required string or number, currently forcing string only
+// NOTE: Komodo doc requires string OR number - currently forcing string only
 pub fn get_imports(
     some_user: komodorpcutil::KomodoRPC, 
     hash_or_height: String)
@@ -439,9 +444,9 @@ pub fn get_wallet_burn_transactions(
     
     let method_name: String = String::from("getwalletburntransactions");
     let temp_count = count.unwrap_or(10);
-    let method_body: String = String::from("[\"")
+    let method_body: String = String::from("[")
                     + &temp_count.to_string()
-                    + &String::from("\"]");
+                    + &String::from("]");
     
     let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
     let result = komodorpcutil::request(some_user.clone(), data);
