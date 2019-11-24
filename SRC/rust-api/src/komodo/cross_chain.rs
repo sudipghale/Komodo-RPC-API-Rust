@@ -1,10 +1,75 @@
+#![warn(missing_docs)]
+//! 
+//! This is the documentation for 'Cross-Chain API' module of Komodo.
+//!
+//! The 'Cross-Chain API' module of Komodo contains functionality of the 'Cross-Chain API' noted on the
+//! [Komodo website].
+//! 
+//! # Remarks
+//! 
+//! * ? Some documentation of methods may reference a different method.
+//! 
+//! * A valid KomodoRPC object type must be passed in.
+//! 
+//! * All examples for each method assumes a valid KomodoRPC object, named `some_user`, is used.
+//! 
+//! * Use of any methods requires the following modules:
+//! ```
+//! mod komodorpcutil;
+//! mod komodo;
+//! use komodorpcutil::KomodoRPC;
+//! ```
+//! 
+//! [Komodo website]: https://docs.komodoplatform.com/basic-docs/smart-chains/smart-chain-api/crosschain.html
+//! 
+
+
+// TODO: - run fmt and clippy
+//       - document all methods
+//          - more advanced examples
+//       - ? potential fix for no function/method overloading if extra time
+//              -> trait object static/dynamic dispatch for multi-type parameter
+//       - ? some_user parameter may be simplified further
+
 
 use super:: komodorpcutil;
 use komodorpcutil::KomodoRPC;
 
-// TODO: - run fmt and clippy
-//       - doc
-
+/// ?? The migrate_create_burn_transaction method creates a transaction burning a specific amount of 
+/// coins or tokens. This method also creates a payouts object which is later used to create an 
+/// import transaction for the value corresponding to the burned amount. This method should be 
+/// called on the source chain.
+/// 
+/// The method creates a burn transaction and returns it. This should be broadcast to the source chain using the sendrawtransaction method. After the burn transaction is successfully mined, the user might have to wait for some amount of time for the back notarization to reach the source chain. The back notarization contains the MoMoM fingerprints of the mined block that contains the burn transaction.
+/// 
+/// The hex value of the burn transaction along with the other returned value payouts are used as arguments for the migrate_createimporttransaction method.
+/// 
+/// # Arguments
+/// 
+/// * `some_user` - A required KomodoRPC object type that represents the user.
+/// * `dest_chain` - A required string type that represents the name of the destination chain.
+/// * `dest_address` - A required string that represents the address on the destination chain where coins are to be sent; the pubkey if tokens are to be sent.
+/// * `amount` - A required u32 that represents the amount in coins or tokens that should be burned on the source chain and created on the destination chain; if the indicated assets are tokens, the amount can be set only to 1, as only migration of non-fungible tokens are supported at this time.
+/// * `token_id` - An optional string that represents the token id in hex; if set, the software assumes that the user is migrating tokens.
+/// 
+/// # Response
+/// 
+/// * `payouts` - A hex string of the created payouts; this value is passed into the migrate_createimporttransaction method.
+/// * `BurnTxHex` - A hex string of the returned burn transaction.
+/// 
+/// # Examples
+/// ```
+/// 
+/// let result = komodo::cross_chain::migrate_create_burn_transaction(some_user, 
+///                                                                   "CFEKDRAGON".to_string(), 
+///                                                                   "RBQ1XwmzduHvciRJbXbWY9YBSNtaqZvfC4".to_string(), 
+///                                                                   7.77u32, 
+///                                                                   None);
+/// 
+/// ```
+/// 
+/// TODO: Provide more advanced examples
+/// 
 pub fn migrate_create_burn_transaction(
     some_user: komodorpcutil::KomodoRPC, 
     dest_chain: String,
@@ -13,8 +78,8 @@ pub fn migrate_create_burn_transaction(
     token_id: Option<String>)
     ->Result<(), reqwest::Error>
 {
-	
-	let method_name: String = String::from("migrate_createburntransaction");
+    
+    let method_name: String = String::from("migrate_createburntransaction");
     let method_body: String;
     let temp_token_id: String = token_id.unwrap_or("".to_string());
     
@@ -50,11 +115,12 @@ pub fn migrate_create_burn_transaction(
             
     }
     
-	let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
-	let result = komodorpcutil::request(some_user.clone(), data);
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
     return result;
     
 }
+
 
 pub fn migrate_convert_to_export(
     some_user: komodorpcutil::KomodoRPC, 
@@ -63,7 +129,7 @@ pub fn migrate_convert_to_export(
     ->Result<(), reqwest::Error>
 {
     
-	let method_name: String = String::from("migrate_converttoexport");
+    let method_name: String = String::from("migrate_converttoexport");
     //let method_body = format!("[\"{0}\",\"{1}\"]", burn_tx, dest_chain);
     let method_body: String = String::from("[\"")
                     + &burn_tx.to_string()
@@ -72,12 +138,12 @@ pub fn migrate_convert_to_export(
                     + &String::from("\"]");
     
     let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
-	let result = komodorpcutil::request(some_user.clone(), data);
+    let result = komodorpcutil::request(some_user.clone(), data);
     return result;
     
 }
 
-pub fn migrate_createimporttransaction(
+pub fn migrate_create_import_transaction(
     some_user: komodorpcutil::KomodoRPC, 
     burn_tx: String,
     payouts: String,
@@ -129,7 +195,7 @@ pub fn migrate_createimporttransaction(
     
     
     let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
-	let result = komodorpcutil::request(some_user.clone(), data);
+    let result = komodorpcutil::request(some_user.clone(), data);
     return result;
     
 }
@@ -158,8 +224,8 @@ pub fn migrate_complete_import_transaction(
     
     method_body = method_body + &String::from("\"]");
     
-	let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
-	let result = komodorpcutil::request(some_user.clone(), data);
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
     
     return result;
     
@@ -177,8 +243,8 @@ pub fn migrate_check_burn_transaction_source(
                     + &burn_tx_id.to_string()
                     + &String::from("\"]");
     
-	let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
-	let result = komodorpcutil::request(some_user.clone(), data);
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
     
     return result;
     
@@ -199,8 +265,8 @@ pub fn migrate_create_notary_approval_transaction(
                     + &tx_out_proof.to_string()
                     + &String::from("\"]");
     
-	let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
-	let result = komodorpcutil::request(some_user.clone(), data);
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
     
     return result;
     
@@ -221,8 +287,8 @@ pub fn self_import(
                     + &amount.to_string()
                     + &String::from("\"]");
     
-	let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
-	let result = komodorpcutil::request(some_user.clone(), data);
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
     
     return result;
     
@@ -243,8 +309,8 @@ pub fn calc_MoM(
                     + &MoM_depth.to_string()
                     + &String::from("\"]");
     
-	let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
-	let result = komodorpcutil::request(some_user.clone(), data);
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
     
     return result;
     
@@ -268,8 +334,8 @@ pub fn MoMoM_data(
                     + &cc_id.to_string()
                     + &String::from("\"]");
     
-	let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
-	let result = komodorpcutil::request(some_user.clone(), data);
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
     
     return result;
     
@@ -287,8 +353,8 @@ pub fn asset_chain_proof(
                                 + &tx_id.to_string()
                                 + &String::from("\"]");
     
-	let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
-	let result = komodorpcutil::request(some_user.clone(), data);
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
     
     return result;
     
@@ -306,8 +372,8 @@ pub fn get_notarisations_for_block(
                                 + &height.to_string()
                                 + &String::from("\"]");
     
-	let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
-	let result = komodorpcutil::request(some_user.clone(), data);
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
     
     return result;
     
@@ -339,8 +405,8 @@ pub fn scan_notarisations_db(
     
     method_body = method_body + &String::from("\"]");
     
-	let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
-	let result = komodorpcutil::request(some_user.clone(), data);
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
     
     return result;
     
@@ -358,8 +424,8 @@ pub fn get_imports(
                     + &hash_or_height.to_string()
                     + &String::from("\"]");
     
-	let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
-	let result = komodorpcutil::request(some_user.clone(), data);
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
     
     return result;
     
@@ -377,8 +443,8 @@ pub fn get_wallet_burn_transactions(
                     + &temp_count.to_string()
                     + &String::from("\"]");
     
-	let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
-	let result = komodorpcutil::request(some_user.clone(), data);
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
     
     return result;
     
