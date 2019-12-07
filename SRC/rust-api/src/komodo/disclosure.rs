@@ -22,7 +22,9 @@ Name	Type	Description
 "message"	(string, optional)
  */
 
- pub fn z_get_payment_disclosure(someUser:komodorpcutil::KomodoRPC,txid:String,js_index:String,output_index:String,message:Option<String>)->Result<(),reqwest::Error>
+ pub fn z_get_payment_disclosure(someUser:komodorpcutil::KomodoRPC,
+  txid:String,js_index:String,
+  output_index:String,message:Option<String>)->Result<(),reqwest::Error>
  {
     let method_body:String;
     let temp_message = message.unwrap_or("".to_string()); //Default value is 0

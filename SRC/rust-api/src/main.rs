@@ -157,24 +157,33 @@ pub fn main() {
 
 //importprivkey
 //let result= komodo::wallet::import_priv_key(someUser,"sfdsjfjsdkdfjsdfkjds".to_string(), Some("testing".to_string()),None);
-//let result= komodo::wallet::import_priv_key(someUser,"sfdsjfjsdkdfjsdfkjds".to_string(), Some("".to_string()),None); 	TODO: Json value error 
+//komodo::wallet::import_priv_key(someUser,"sfdsjfjsdkdfjsdfkjds".to_string(), Some("".to_string()),None); 	TODO: Json value error 
 
 //importwallet
-//let result=komodo::wallet::import_wallet(someUser, "filename".to_string());
+//komodo::wallet::import_wallet(someUser, "filename".to_string());
 
 //keypoolrefill
-//let result=komodo::wallet::key_pool_refill(someUser,None);
-//let result=komodo::wallet::key_pool_refill(someUser,Some(5));
+//komodo::wallet::key_pool_refill(someUser,None);
+//komodo::wallet::key_pool_refill(someUser,Some(5));
 
 
 //listaddressgroupings
-//let result=komodo::wallet::list_address_groupings(someUser);
+//komodo::wallet::list_address_groupings(someUser);
 
 //lislockunspent
-//let result=komodo::wallet::list_lock_unspent(someUser);
+//komodo::wallet::list_lock_unspent(someUser);
 
 //listreceivedbyaddress
-let result=komodo::wallet::list_received_by_address(someUser,None,None,None);
+//komodo::wallet::list_received_by_address(someUser,None,None,None);
+
+//resendwallettransactions
+//komodo::wallet::resend_wallet_transactions(someUser);
+
+//lockunspent
+//komodo::wallet::lock_unspent(someUser,false, "d7ba45296c66e16eb61f27a4eef8848c7f5579fe801f277c1b0e074a4f47d6fd".to_string(), 0);
+
+//listsinceblock
+//komodo::wallet::list_since_block(someUser,None,None, None);
 
 }
 
