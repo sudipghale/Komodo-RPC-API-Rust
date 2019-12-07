@@ -2,8 +2,7 @@
  * Disclosure
 The following RPC calls interact with the komodod software, and are made available through the komodo-cli software
  */
-
-use super:: komodorpcutil;
+use super::komodorpcutil;
 use komodorpcutil::KomodoRPC;
 
 /**
@@ -17,41 +16,57 @@ The z_getpaymentdisclosure method generates a payment disclosure for a given joi
 # Arguments
 Name	Type	Description
 "txid"	(string, required)	(in development)
-"js_index"	(string, required)	
-"output_index"	(string, required)	
+"js_index"	(string, required)
+"output_index"	(string, required)
 "message"	(string, optional)
  */
 
- pub fn z_get_payment_disclosure(someUser:komodorpcutil::KomodoRPC,
-  txid:String,js_index:String,
-  output_index:String,message:Option<String>)->Result<(),reqwest::Error>
- {
-    let method_body:String;
+pub fn z_get_payment_disclosure(
+    someUser: komodorpcutil::KomodoRPC,
+    txid: String,
+    js_index: String,
+    output_index: String,
+    message: Option<String>,
+) -> Result<(), reqwest::Error> {
+    let method_body: String;
     let temp_message = message.unwrap_or("".to_string()); //Default value is 0
-    if (!temp_message.is_empty())
-    {
-        method_body =String::from("[\"") + &txid+ &",".to_string()+&js_index+ &",".to_string()+&output_index+ &",".to_string()+&temp_message+ "\"]";// String::from(format!("[/"{0}/"]",temp_top));
+    if (!temp_message.is_empty()) {
+        method_body = String::from("[\"")
+            + &txid
+            + &",".to_string()
+            + &js_index
+            + &",".to_string()
+            + &output_index
+            + &",".to_string()
+            + &temp_message
+            + "\"]"; // String::from(format!("[/"{0}/"]",temp_top));
+    } else {
+        method_body = String::from("[\"")
+            + &txid
+            + &",".to_string()
+            + &js_index
+            + &",".to_string()
+            + &output_index
+            + "\"]";
     }
-    else
-    {
-        method_body =String::from("[\"") + &txid+ &",".to_string()+&js_index+ &",".to_string()+&output_index +"\"]";
-    }
 
-//let params = String::from("[") + &top.to_string()+"]"; 
+    //let params = String::from("[") + &top.to_string()+"]";
 
+    let method_name: String = String::from("z_getpaymentdisclosure");
 
-let method_name:String = String::from("z_getpaymentdisclosure");
+    let data: String = String::from(komodorpcutil::generate_body(
+        someUser.clone(),
+        method_name,
+        method_body,
+    ));
+    //println!("the payload is{}",payload);
+    println!("the body is{:?}", data);
+    let result = komodorpcutil::request(someUser.clone(), data);
+    return result;
+}
 
-
-let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
-//println!("the payload is{}",payload);
-println!("the body is{:?}",data );
-let result = komodorpcutil::request( someUser.clone(), data);
-return result;
- }
-
- /**
-  * 
+/**
+  *
   z_validatepaymentdisclosure
 z_validatepaymentdisclosure "paymentdisclosure"
 
@@ -65,19 +80,22 @@ Name	Type	Description
 (currently disabled)
   */
 
-  pub fn z_validate_payment_disclosure(someUser:komodorpcutil::KomodoRPC,paymentdisclosure:String)->Result<(),reqwest::Error>
-  {
-    
-    let params =String::from("[\"") + &paymentdisclosure+ "\"]";// String::from(format!("[/"{0}/"]",temp_top));
-     
+pub fn z_validate_payment_disclosure(
+    someUser: komodorpcutil::KomodoRPC,
+    paymentdisclosure: String,
+) -> Result<(), reqwest::Error> {
+    let params = String::from("[\"") + &paymentdisclosure + "\"]"; // String::from(format!("[/"{0}/"]",temp_top));
 
- 
- let method_name:String = String::from("z_validatepaymentdisclosure"); 
- let method_body:String = String::from(params);
- let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
+    let method_name: String = String::from("z_validatepaymentdisclosure");
+    let method_body: String = String::from(params);
+    let data: String = String::from(komodorpcutil::generate_body(
+        someUser.clone(),
+        method_name,
+        method_body,
+    ));
 
- //println!("the payload is{}",payload);
- println!("the body is{:?}",data );
- let result = komodorpcutil::request( someUser.clone(), data);
- return result;
-  }
+    //println!("the payload is{}",payload);
+    println!("the body is{:?}", data);
+    let result = komodorpcutil::request(someUser.clone(), data);
+    return result;
+}

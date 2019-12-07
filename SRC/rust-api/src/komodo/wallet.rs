@@ -1,4 +1,4 @@
-use super:: komodorpcutil;
+use super::komodorpcutil;
 use komodorpcutil::KomodoRPC;
 
 //addmultisigaddress has been DEPRECATED
@@ -16,15 +16,20 @@ Name	        Type                       	Description
 Name	   Type	     Description
 "path"	(string)	the full path of the destination file
 */
-pub fn backup_wallet(someUser:komodorpcutil::KomodoRPC, destination:String)->Result<(),reqwest::Error>
-{
-  
-let method_body =String::from("[\"") + &destination+ "\"]";// String::from(format!("[/"{0}/"]",temp_top));
-let method_name:String = String::from("backupwallet"); 
-let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
+pub fn backup_wallet(
+    someUser: komodorpcutil::KomodoRPC,
+    destination: String,
+) -> Result<(), reqwest::Error> {
+    let method_body = String::from("[\"") + &destination + "\"]"; // String::from(format!("[/"{0}/"]",temp_top));
+    let method_name: String = String::from("backupwallet");
+    let data: String = String::from(komodorpcutil::generate_body(
+        someUser.clone(),
+        method_name,
+        method_body,
+    ));
 
-println!("the body is{:?}",data );
-komodorpcutil::request( someUser.clone(), data)
+    println!("the body is{:?}", data);
+    komodorpcutil::request(someUser.clone(), data)
 }
 
 /*
@@ -41,15 +46,20 @@ Name   	Type     	Description
 "data"	(string)	the private key
 
 */
-pub fn dump_priv_key(someUser:komodorpcutil::KomodoRPC, address:String)->Result<(),reqwest::Error>
-{
-  
-let method_body =String::from("[\"") + &address+ "\"]";
-let method_name:String = String::from("dumpprivkey"); 
-let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
+pub fn dump_priv_key(
+    someUser: komodorpcutil::KomodoRPC,
+    address: String,
+) -> Result<(), reqwest::Error> {
+    let method_body = String::from("[\"") + &address + "\"]";
+    let method_name: String = String::from("dumpprivkey");
+    let data: String = String::from(komodorpcutil::generate_body(
+        someUser.clone(),
+        method_name,
+        method_body,
+    ));
 
-println!("the body is{:?}",data );
-komodorpcutil::request( someUser.clone(), data)
+    println!("the body is{:?}", data);
+    komodorpcutil::request(someUser.clone(), data)
 }
 
 /*
@@ -68,16 +78,20 @@ Name	  Type    	Description
 
 */
 
-pub fn dump_wallet(someUser:komodorpcutil::KomodoRPC, filename:String)->Result<(),reqwest::Error>
-{
-  
-let method_body =String::from("[\"") + &filename+ "\"]";
-let method_name:String = String::from("dumpwallet"); 
-let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
+pub fn dump_wallet(
+    someUser: komodorpcutil::KomodoRPC,
+    filename: String,
+) -> Result<(), reqwest::Error> {
+    let method_body = String::from("[\"") + &filename + "\"]";
+    let method_name: String = String::from("dumpwallet");
+    let data: String = String::from(komodorpcutil::generate_body(
+        someUser.clone(),
+        method_name,
+        method_body,
+    ));
 
-println!("the body is{:?}",data );
-komodorpcutil::request( someUser.clone(), data)
-
+    println!("the body is{:?}", data);
+    komodorpcutil::request(someUser.clone(), data)
 }
 
 /*
@@ -97,15 +111,20 @@ Text Response
 wallet encrypted; Komodo server stopping, restart to run with encrypted wallet. The keypool has been flushed, you need to make a new backup
 
 */
-pub fn encrypt_wallet(someUser:komodorpcutil::KomodoRPC, passphrase:String)->Result<(),reqwest::Error>
-{
-  
-let method_body =String::from("[\"") + &passphrase+ "\"]";
-let method_name:String = String::from("encruptwallet"); 
-let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
+pub fn encrypt_wallet(
+    someUser: komodorpcutil::KomodoRPC,
+    passphrase: String,
+) -> Result<(), reqwest::Error> {
+    let method_body = String::from("[\"") + &passphrase + "\"]";
+    let method_name: String = String::from("encruptwallet");
+    let data: String = String::from(komodorpcutil::generate_body(
+        someUser.clone(),
+        method_name,
+        method_body,
+    ));
 
-println!("the body is{:?}",data );
-komodorpcutil::request( someUser.clone(), data)
+    println!("the body is{:?}", data);
+    komodorpcutil::request(someUser.clone(), data)
 }
 /*
  * getaccount
@@ -117,18 +136,23 @@ Name	    Type	              Description
 #Response
 Name        	Type     	Description
 "accountname"	(string)	the account address
- * 
+ *
  */
- 
- pub fn get_account(someUser:komodorpcutil::KomodoRPC, address:String)->Result<(),reqwest::Error>
-{
-  
-let method_body =String::from("[\"") + &address+ "\"]";
-let method_name:String = String::from("getaccount"); 
-let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
 
-println!("the body is{:?}",data );
-komodorpcutil::request( someUser.clone(), data)
+pub fn get_account(
+    someUser: komodorpcutil::KomodoRPC,
+    address: String,
+) -> Result<(), reqwest::Error> {
+    let method_body = String::from("[\"") + &address + "\"]";
+    let method_name: String = String::from("getaccount");
+    let data: String = String::from(komodorpcutil::generate_body(
+        someUser.clone(),
+        method_name,
+        method_body,
+    ));
+
+    println!("the body is{:?}", data);
+    komodorpcutil::request(someUser.clone(), data)
 }
 
 /*
@@ -147,44 +171,47 @@ includeWatchonly	(bool, optional, default=false)	also include balance in watchon
 Name	Type	Description
 amount	(numeric)	the total amount
 */
-pub fn get_balance(  //TODO check def value and if conditions 
+pub fn get_balance(
+    //TODO check def value and if conditions
     SomeUser: komodorpcutil::KomodoRPC,
-    minconf:Option<u32>,
-    includeWatchonly:Option<bool>)
-      ->Result<(), reqwest::Error>
-  {
-      let method_body:String;
-      let temp_minconf = minconf.unwrap_or(1); //Default value is 1
-      let temp_includeWatchonly:String = includeWatchonly.unwrap_or(false).to_string();
-      if (!(temp_minconf==1) && !(temp_includeWatchonly.is_empty()))
-      {
-        method_body = String::from("[")+ &temp_minconf.to_string()+ &",".to_string()+ &temp_includeWatchonly+ &String::from("]");
-      }
-      else if ((temp_minconf==1) && !(temp_includeWatchonly.is_empty()))
-      {
-        method_body = String::from("[") + &temp_minconf.to_string()+  &String::from("]");
-     }
-     else if (!(temp_minconf==1) && (temp_includeWatchonly.is_empty()))
-      {
-        method_body = String::from("[") + &temp_includeWatchonly.to_string()+  &String::from("]");
-     }
-     else//  ((temp_bantime==0) && !(temp_absolute.is_empty()))
-      {
-      method_body = String::from("[") + &String::from("]");	
-      }
-  
-  let method_name:String = String::from("getbalance");
-  let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
-  komodorpcutil::request( SomeUser.clone(), data)
-  }
+    minconf: Option<u32>,
+    includeWatchonly: Option<bool>,
+) -> Result<(), reqwest::Error> {
+    let method_body: String;
+    let temp_minconf = minconf.unwrap_or(1); //Default value is 1
+    let temp_includeWatchonly: String = includeWatchonly.unwrap_or(false).to_string();
+    if (!(temp_minconf == 1) && !(temp_includeWatchonly.is_empty())) {
+        method_body = String::from("[")
+            + &temp_minconf.to_string()
+            + &",".to_string()
+            + &temp_includeWatchonly
+            + &String::from("]");
+    } else if ((temp_minconf == 1) && !(temp_includeWatchonly.is_empty())) {
+        method_body = String::from("[") + &temp_minconf.to_string() + &String::from("]");
+    } else if (!(temp_minconf == 1) && (temp_includeWatchonly.is_empty())) {
+        method_body = String::from("[") + &temp_includeWatchonly.to_string() + &String::from("]");
+    } else
+    //  ((temp_bantime==0) && !(temp_absolute.is_empty()))
+    {
+        method_body = String::from("[") + &String::from("]");
+    }
+
+    let method_name: String = String::from("getbalance");
+    let data: String = String::from(komodorpcutil::generate_body(
+        SomeUser.clone(),
+        method_name,
+        method_body,
+    ));
+    komodorpcutil::request(SomeUser.clone(), data)
+}
 
 /*
 getbalance64
 This method is part of the new ac_staked functionality.// DIDNT IMPLEMENTED NOT ENOUGH INFO....
 
 The getbalance64 method is used only on Smart Chains that are utilizing the ac_staked functionality.
- On KMD-based Proof-of-Stake (PoS) Smart Chains, all staked coins are placed into one of 64 segments (segid's'). 
- The getbalance64 method returns the balance of coins in each segid. 
+ On KMD-based Proof-of-Stake (PoS) Smart Chains, all staked coins are placed into one of 64 segments (segid's').
+ The getbalance64 method returns the balance of coins in each segid.
 */
 
 /*
@@ -200,14 +227,16 @@ Name	Type	Description
 Name	Type	Description
 "address"	(string)	the new address
 */
-pub fn get_new_address(SomeUser: komodorpcutil::KomodoRPC) ->Result<(), reqwest::Error>
-{
-    let method_name:String = String::from("getnewaddress");
-	let method_body:String = String::from("[]");
-	let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
-	let result =komodorpcutil::request( SomeUser.clone(), data);
+pub fn get_new_address(SomeUser: komodorpcutil::KomodoRPC) -> Result<(), reqwest::Error> {
+    let method_name: String = String::from("getnewaddress");
+    let method_body: String = String::from("[]");
+    let data: String = String::from(komodorpcutil::generate_body(
+        SomeUser.clone(),
+        method_name,
+        method_body,
+    ));
+    let result = komodorpcutil::request(SomeUser.clone(), data);
     return result;
-
 }
 
 /*
@@ -219,19 +248,21 @@ This is for use with raw transactions, NOT normal use.
 
 #Arguments
 Name	Type	Description
-(none)		
+(none)
 #Response
 Name	Type	Description
 "address"	(string)	the address
 */
-pub fn get_raw_change_address(SomeUser: komodorpcutil::KomodoRPC) ->Result<(), reqwest::Error>
-{
-    let method_name:String = String::from("getrawchangeaddress");
-	let method_body:String = String::from("[]");
-	let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
-	let result =komodorpcutil::request( SomeUser.clone(), data);
+pub fn get_raw_change_address(SomeUser: komodorpcutil::KomodoRPC) -> Result<(), reqwest::Error> {
+    let method_name: String = String::from("getrawchangeaddress");
+    let method_body: String = String::from("[]");
+    let data: String = String::from(komodorpcutil::generate_body(
+        SomeUser.clone(),
+        method_name,
+        method_body,
+    ));
+    let result = komodorpcutil::request(SomeUser.clone(), data);
     return result;
-
 }
 
 /*
@@ -251,28 +282,35 @@ amount	(numeric)	the total amount of the relevant coin received at this address
 */
 
 pub fn get_receive_by_address(
-	SomeUser: komodorpcutil::KomodoRPC,
-	address:String,
-	min_conf:Option<u32>) 
-	->Result<(), reqwest::Error>
-{
-	let method_body:String;
-	let temp_min_conf:String = min_conf.unwrap_or(1).to_string();// default 1///TO DO
-    if (temp_min_conf.is_empty())
+    SomeUser: komodorpcutil::KomodoRPC,
+    address: String,
+    min_conf: Option<u32>,
+) -> Result<(), reqwest::Error> {
+    let method_body: String;
+    let temp_min_conf: String = min_conf.unwrap_or(1).to_string(); // default 1///TO DO
+    if (temp_min_conf.is_empty()) {
+        method_body =
+            String::from("[\"") + &address.to_string() + &String::from("\"") + &String::from("]");
+    } else
+    //if (!temp_gen_proc_limit.is_empty())
     {
-		method_body = String::from("[\"") + &address.to_string()+ &String::from("\"")+ &String::from("]");
+        method_body = String::from("[\"")
+            + &address.to_string()
+            + &"\",".to_string()
+            + &temp_min_conf
+            + &String::from("]");
     }
-    else//if (!temp_gen_proc_limit.is_empty())
-    {
-		method_body = String::from("[\"") + &address.to_string()+ &"\",".to_string()+ &temp_min_conf +&String::from("]");
-	}
-	
+
     let payload =  "{\"jsonrpc\": \"1.0\", \"id\":\"curltest\",  \"method\": \"getreceivedbyaddress\", \"params\": [\"RJSDZjp7kjBNhHsbECDE1jwYNK7af41pZN\", 6] }\n";
-    let method_name:String = String::from("getreceivedbyaddress");
-    let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
+    let method_name: String = String::from("getreceivedbyaddress");
+    let data: String = String::from(komodorpcutil::generate_body(
+        SomeUser.clone(),
+        method_name,
+        method_body,
+    ));
     println!("payload is {:?}", payload);
-    println!("the body is{:?}",data );
-	let result =komodorpcutil::request( SomeUser.clone(), data);
+    println!("the body is{:?}", data);
+    let result = komodorpcutil::request(SomeUser.clone(), data);
     return result;
 }
 
@@ -298,38 +336,45 @@ Name	Type	Description
 "txid"	(string)	the transaction id
 "time"	(numeric)	the transaction time in seconds since epoch (1 Jan 1970 GMT)
 "timereceived"	(numeric)	the time received in seconds since epoch (1 Jan 1970 GMT)
-"details" : [ ... ]	(array)	
+"details" : [ ... ]	(array)
 "account"	(string)	DEPRECATED the account name involved in the transaction; can be "" for the default account
 "address"	(string)	the address involved in the transaction
 "category"	(string)	the category - either send or receive
 "amount"	(numeric)	the amount
 "vout"	(numeric)	the vout value
-"vjoinsplit" : [ ... ]	(array of json objects)	
+"vjoinsplit" : [ ... ]	(array of json objects)
 "anchor"	(string)	merkle root of note commitment tree
-"nullifiers" : [ ... ]	(array of strings)	
-"hex"	(string)	
-"commitments" : [ ... ]	(array of strings)	
-"hex"	(string)	
-"macs" : [ ... ]	(array of strings)	
-"hex"	(string)	
+"nullifiers" : [ ... ]	(array of strings)
+"hex"	(string)
+"commitments" : [ ... ]	(array of strings)
+"hex"	(string)
+"macs" : [ ... ]	(array of strings)
+"hex"	(string)
 "vpub_old"	(numeric)	the amount removed from the transparent value pool
 "vpub_new"	(numeric)	the amount added to the transparent value pool
 "hex"	(string)	transaction data translated into hex
 */
 pub fn get_transaction(
-	SomeUser: komodorpcutil::KomodoRPC,
-	tx_id: String,
-	include_watch_only:Option<bool>) 
-	->Result<(), reqwest::Error>
-{
-	let method_body:String;
-  let temp_include_watch_only:String = include_watch_only.unwrap_or(false).to_string();
-  method_body = String::from("[\"") + &tx_id.to_string()+ &String::from("\",")+&temp_include_watch_only+ &String::from("]");
-  let method_name:String = String::from("gettransaction");
-  let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
-  println!("the body is{:?}",data );
-	let result =komodorpcutil::request( SomeUser.clone(), data);
-  return result;
+    SomeUser: komodorpcutil::KomodoRPC,
+    tx_id: String,
+    include_watch_only: Option<bool>,
+) -> Result<(), reqwest::Error> {
+    let method_body: String;
+    let temp_include_watch_only: String = include_watch_only.unwrap_or(false).to_string();
+    method_body = String::from("[\"")
+        + &tx_id.to_string()
+        + &String::from("\",")
+        + &temp_include_watch_only
+        + &String::from("]");
+    let method_name: String = String::from("gettransaction");
+    let data: String = String::from(komodorpcutil::generate_body(
+        SomeUser.clone(),
+        method_name,
+        method_body,
+    ));
+    println!("the body is{:?}", data);
+    let result = komodorpcutil::request(SomeUser.clone(), data);
+    return result;
 }
 
 /*
@@ -340,20 +385,22 @@ The getunconfirmedbalance method returns the server's total unconfirmed balance.
 
 #Arguments
 Name	Type	Description
-(none)		
+(none)
 #Response
 Name	Type	Description
 (none)
 
 */
-pub fn get_unconfirmed_balance(SomeUser: komodorpcutil::KomodoRPC) ->Result<(), reqwest::Error>
-{
-    let method_name:String = String::from("getunconfirmedbalance");
-	let method_body:String = String::from("[]");
-	let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
-	let result =komodorpcutil::request( SomeUser.clone(), data);
+pub fn get_unconfirmed_balance(SomeUser: komodorpcutil::KomodoRPC) -> Result<(), reqwest::Error> {
+    let method_name: String = String::from("getunconfirmedbalance");
+    let method_body: String = String::from("[]");
+    let data: String = String::from(komodorpcutil::generate_body(
+        SomeUser.clone(),
+        method_name,
+        method_body,
+    ));
+    let result = komodorpcutil::request(SomeUser.clone(), data);
     return result;
-
 }
 
 /*
@@ -363,7 +410,7 @@ The getwalletinfo method returns an object containing various information about 
 
 #Arguments
 Name	Type	Description
-(none)		
+(none)
 #Response
 Name	Type	Description
 "walletversion"	(numeric)	the wallet version
@@ -376,14 +423,16 @@ Name	Type	Description
 "unlocked_until"	(numeric)	the timestamp in seconds since epoch (midnight Jan 1 1970 GMT) that the wallet is unlocked for transfers, or 0 if the wallet is locked
 "paytxfee"	(numeric)	the transaction fee configuration, given as the relevant COIN per KB
 */
-pub fn get_wallet_info(SomeUser: komodorpcutil::KomodoRPC) ->Result<(), reqwest::Error>
-{
-    let method_name:String = String::from("getwalletinfo");
-	let method_body:String = String::from("[]");
-	let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
-	let result =komodorpcutil::request( SomeUser.clone(), data);
+pub fn get_wallet_info(SomeUser: komodorpcutil::KomodoRPC) -> Result<(), reqwest::Error> {
+    let method_name: String = String::from("getwalletinfo");
+    let method_body: String = String::from("[]");
+    let data: String = String::from(komodorpcutil::generate_body(
+        SomeUser.clone(),
+        method_name,
+        method_body,
+    ));
+    let result = komodorpcutil::request(SomeUser.clone(), data);
     return result;
-
 }
 
 /*
@@ -404,27 +453,36 @@ rescan	(boolean, optional, default=true)	rescan the wallet for transactions
 Name	Type	Description
 (none)
 */
-pub fn import_address(  //TODO check def value and if conditions 
-  SomeUser: komodorpcutil::KomodoRPC,
-  address:String,
-  label:Option<String>,
-  rescan:Option<bool>)
-    ->Result<(), reqwest::Error>
-{
-    let method_body:String;
-    let temp_label:String = label.unwrap_or("".to_string()).to_string(); 
-    let temp_rescan:String = rescan.unwrap_or(true).to_string();
+pub fn import_address(
+    //TODO check def value and if conditions
+    SomeUser: komodorpcutil::KomodoRPC,
+    address: String,
+    label: Option<String>,
+    rescan: Option<bool>,
+) -> Result<(), reqwest::Error> {
+    let method_body: String;
+    let temp_label: String = label.unwrap_or("".to_string()).to_string();
+    let temp_rescan: String = rescan.unwrap_or(true).to_string();
 
-    if(temp_label.is_empty())
-    {
-      method_body = String::from("[\"")+ &address+ &"\",".to_string()+ &temp_rescan+ &String::from("]");
+    if (temp_label.is_empty()) {
+        method_body =
+            String::from("[\"") + &address + &"\",".to_string() + &temp_rescan + &String::from("]");
+    } else {
+        method_body = String::from("[\"")
+            + &address
+            + &"\",\"".to_string()
+            + &temp_label
+            + &"\",".to_string()
+            + &temp_rescan
+            + &String::from("]");
     }
-    else{
-      method_body = String::from("[\"")+ &address+ &"\",\"".to_string()+ &temp_label+&"\",".to_string()+ &temp_rescan+ &String::from("]");
-        }
-    let method_name:String = String::from("importaddress");
-    let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
-    let result =komodorpcutil::request( SomeUser.clone(), data);
+    let method_name: String = String::from("importaddress");
+    let data: String = String::from(komodorpcutil::generate_body(
+        SomeUser.clone(),
+        method_name,
+        method_body,
+    ));
+    let result = komodorpcutil::request(SomeUser.clone(), data);
     return result;
 }
 /*
@@ -448,29 +506,41 @@ Name	Type	Description
 addresses	(string)	the public address
 
 */
-pub fn import_priv_key(  //TODO check def value and if conditions 
-  SomeUser: komodorpcutil::KomodoRPC,
-  priv_key:String,
-  label:Option<String>,
-  rescan:Option<bool>)
-    ->Result<(), reqwest::Error>
-{
-    let method_body:String;
-    let temp_label:String = label.unwrap_or("".to_string()).to_string(); 
-    let temp_rescan:String = rescan.unwrap_or(true).to_string();
+pub fn import_priv_key(
+    //TODO check def value and if conditions
+    SomeUser: komodorpcutil::KomodoRPC,
+    priv_key: String,
+    label: Option<String>,
+    rescan: Option<bool>,
+) -> Result<(), reqwest::Error> {
+    let method_body: String;
+    let temp_label: String = label.unwrap_or("".to_string()).to_string();
+    let temp_rescan: String = rescan.unwrap_or(true).to_string();
 
-    if(temp_label.is_empty())
-    {
-      method_body = String::from("[\"")+ &priv_key+ &"\",".to_string()+ &temp_rescan+ &String::from("]");
+    if (temp_label.is_empty()) {
+        method_body = String::from("[\"")
+            + &priv_key
+            + &"\",".to_string()
+            + &temp_rescan
+            + &String::from("]");
+    } else {
+        method_body = String::from("[\"")
+            + &priv_key
+            + &"\",\"".to_string()
+            + &temp_label
+            + &"\",".to_string()
+            + &temp_rescan
+            + &String::from("]");
     }
-    else{
-      method_body = String::from("[\"")+ &priv_key+ &"\",\"".to_string()+ &temp_label+&"\",".to_string()+ &temp_rescan+ &String::from("]");
-        }
-    let method_name:String = String::from("importprivkey");
-    let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
-    println!("the body is{:?}",data );
+    let method_name: String = String::from("importprivkey");
+    let data: String = String::from(komodorpcutil::generate_body(
+        SomeUser.clone(),
+        method_name,
+        method_body,
+    ));
+    println!("the body is{:?}", data);
 
-    let result =komodorpcutil::request( SomeUser.clone(), data);
+    let result = komodorpcutil::request(SomeUser.clone(), data);
     return result;
 }
 /*
@@ -486,18 +556,22 @@ Name	Type	Description
 Name	Type	Description
 (none)	*/
 
-pub fn import_wallet(someUser:komodorpcutil::KomodoRPC,file_name:String)-> Result<(),reqwest::Error>{
+pub fn import_wallet(
+    someUser: komodorpcutil::KomodoRPC,
+    file_name: String,
+) -> Result<(), reqwest::Error> {
+    let params = String::from("[\"") + &file_name + "\"]";
 
-  let params =String::from("[\"") + &file_name+ "\"]";
-
-      
-  let method_name:String = String::from("importwallet");
-      let method_body:String = String::from(params);
-      let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
-      println!("the body is{:?}",data );
-      let result = komodorpcutil::request( someUser.clone(), data);
-      return result;
-
+    let method_name: String = String::from("importwallet");
+    let method_body: String = String::from(params);
+    let data: String = String::from(komodorpcutil::generate_body(
+        someUser.clone(),
+        method_name,
+        method_body,
+    ));
+    println!("the body is{:?}", data);
+    let result = komodorpcutil::request(someUser.clone(), data);
+    return result;
 }
 
 /**
@@ -511,23 +585,26 @@ Name	Type	Description
 newsize	(numeric, optional, default=100)	the new keypool size
 #Response
 Name	Type	Description
-(none)		
- * 
+(none)
+ *
  */
 
 pub fn key_pool_refill(
-	SomeUser: komodorpcutil::KomodoRPC,
-	new_size:Option<u32>) 
-	->Result<(), reqwest::Error>
-{
-	let method_body:String;
-  let temp_new_size:String = new_size.unwrap_or(100).to_string();
-  method_body = String::from("[") +&temp_new_size+ &String::from("]");
-  let method_name:String = String::from("keypoolrefill");
-  let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
-  println!("the body is{:?}",data );
-	let result =komodorpcutil::request( SomeUser.clone(), data);
-  return result;
+    SomeUser: komodorpcutil::KomodoRPC,
+    new_size: Option<u32>,
+) -> Result<(), reqwest::Error> {
+    let method_body: String;
+    let temp_new_size: String = new_size.unwrap_or(100).to_string();
+    method_body = String::from("[") + &temp_new_size + &String::from("]");
+    let method_name: String = String::from("keypoolrefill");
+    let data: String = String::from(komodorpcutil::generate_body(
+        SomeUser.clone(),
+        method_name,
+        method_body,
+    ));
+    println!("the body is{:?}", data);
+    let result = komodorpcutil::request(SomeUser.clone(), data);
+    return result;
 }
 
 /**
@@ -538,21 +615,23 @@ The listaddressgroupings method lists groups of addresses which have had their c
 
 #Arguments
 Name	Type	Description
-(none)		
+(none)
 #Response
 Name	Type	Description
 "address",	(string)	the address
 amount,	(numeric)	the amount
 "account"	(string, optional)	(DEPRECATED) the account
- * 
+ *
  */
-pub fn list_address_groupings(SomeUser: komodorpcutil::KomodoRPC) ->Result<(), reqwest::Error>
-{
-    let method_name:String = String::from("listaddressgroupings");
-	let method_body:String = String::from("[]");
-	let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
-	komodorpcutil::request( SomeUser.clone(), data)
-
+pub fn list_address_groupings(SomeUser: komodorpcutil::KomodoRPC) -> Result<(), reqwest::Error> {
+    let method_name: String = String::from("listaddressgroupings");
+    let method_body: String = String::from("[]");
+    let data: String = String::from(komodorpcutil::generate_body(
+        SomeUser.clone(),
+        method_name,
+        method_body,
+    ));
+    komodorpcutil::request(SomeUser.clone(), data)
 }
 
 /**
@@ -565,19 +644,21 @@ See the lockunspent call to lock and unlock transactions for spending.
 
 #Arguments
 Name	Type	Description
-(none)		
+(none)
 #Response
 Name	Type	Description
 "txid"	(string)	the transaction id locked
 "vout"	(numeric)	the vout value
  */
-pub fn list_lock_unspent(SomeUser: komodorpcutil::KomodoRPC) ->Result<(), reqwest::Error>
-{
-    let method_name:String = String::from("listlockunspent");
-	let method_body:String = String::from("[]");
-	let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
-	komodorpcutil::request( SomeUser.clone(), data)
-
+pub fn list_lock_unspent(SomeUser: komodorpcutil::KomodoRPC) -> Result<(), reqwest::Error> {
+    let method_name: String = String::from("listlockunspent");
+    let method_body: String = String::from("[]");
+    let data: String = String::from(komodorpcutil::generate_body(
+        SomeUser.clone(),
+        method_name,
+        method_body,
+    ));
+    komodorpcutil::request(SomeUser.clone(), data)
 }
 
 /**
@@ -602,27 +683,34 @@ Name	Type	Description
  */
 
 pub fn list_received_by_address(
-  SomeUser: komodorpcutil::KomodoRPC,
-  min_conf:Option<u32>,
-  include_empty:Option<bool>, 
-  include_watch_only:Option<bool>
-) 
-	->Result<(), reqwest::Error>
-{
-  let method_body:String;
-  let temp_min_conf:String = min_conf.unwrap_or(1).to_string();
-  let temp_include_empty:String = include_empty.unwrap_or(false).to_string();
-  let temp_include_watch_only:String = include_watch_only.unwrap_or(false).to_string();
-  
-  method_body = String::from("[") + &temp_min_conf+&String::from(",")+ &temp_include_empty+ &String::from(",")+&temp_include_watch_only+ &String::from("]");
-  let method_name:String = String::from("listreceivedbyaddress");
-  let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
-  println!("the body is{:?}",data );
-	komodorpcutil::request( SomeUser.clone(), data)
-  
+    SomeUser: komodorpcutil::KomodoRPC,
+    min_conf: Option<u32>,
+    include_empty: Option<bool>,
+    include_watch_only: Option<bool>,
+) -> Result<(), reqwest::Error> {
+    let method_body: String;
+    let temp_min_conf: String = min_conf.unwrap_or(1).to_string();
+    let temp_include_empty: String = include_empty.unwrap_or(false).to_string();
+    let temp_include_watch_only: String = include_watch_only.unwrap_or(false).to_string();
+
+    method_body = String::from("[")
+        + &temp_min_conf
+        + &String::from(",")
+        + &temp_include_empty
+        + &String::from(",")
+        + &temp_include_watch_only
+        + &String::from("]");
+    let method_name: String = String::from("listreceivedbyaddress");
+    let data: String = String::from(komodorpcutil::generate_body(
+        SomeUser.clone(),
+        method_name,
+        method_body,
+    ));
+    println!("the body is{:?}", data);
+    komodorpcutil::request(SomeUser.clone(), data)
 }
 
-/** TODO COMPLETE 
+/** TODO COMPLETE
  * listsinceblock
 listsinceblock ( "blockhash" target-confirmations includeWatchonly )
 
@@ -635,7 +723,7 @@ target-confirmations	(numeric, optional)	the confirmations required (must be 1 o
 includeWatchonly	(bool, optional, default=false)	include transactions to watchonly addresses (see also 'importaddress')
 #Response
 Name	Type	Description
-"transactions":		
+"transactions":
 "account"	(string)	DEPRECATED the account name associated with the transaction; will be "" for the default account
 "address"	(string)	the address of the transaction (not present for move transactions -- category = move)
 "category"	(string)	the transaction category; send has negative amounts, receive has positive amounts
@@ -654,37 +742,35 @@ Name	Type	Description
 "to"	(string)	whether a 'to' comment is associated with the transaction
 "lastblock"	(string)	the hash of the last block
  */
-pub fn list_since_block
-(
-  some_user: komodorpcutil::KomodoRPC, 
-  block_hash: Option<String>,
-  target_conformations: Option<u32>,
-  include_watch_only: Option <bool>
-)
-  ->Result<(), reqwest::Error>
-{
-  
-  let method_name: String = String::from("listsinceblock");
-  let temp_block_hash:String=block_hash.unwrap_or("".to_string());
-  let temp_target_conformations = target_conformations.unwrap_or(1);
-  let temp_watch_only = include_watch_only.unwrap_or(false);
-  
-  let method_body: String = String::from("[\"")
-                  + &temp_block_hash
-                  + &String::from("\",")
-                  + &temp_target_conformations.to_string()
-                  + &String::from(",")
-                  + &temp_watch_only.to_string()
-                  + &String::from("]");
-  
-  let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
-  komodorpcutil::request(some_user.clone(), data)
-  
- 
+pub fn list_since_block(
+    some_user: komodorpcutil::KomodoRPC,
+    block_hash: Option<String>,
+    target_conformations: Option<u32>,
+    include_watch_only: Option<bool>,
+) -> Result<(), reqwest::Error> {
+    let method_name: String = String::from("listsinceblock");
+    let temp_block_hash: String = block_hash.unwrap_or("".to_string());
+    let temp_target_conformations = target_conformations.unwrap_or(1);
+    let temp_watch_only = include_watch_only.unwrap_or(false);
+
+    let method_body: String = String::from("[\"")
+        + &temp_block_hash
+        + &String::from("\",")
+        + &temp_target_conformations.to_string()
+        + &String::from(",")
+        + &temp_watch_only.to_string()
+        + &String::from("]");
+
+    let data: String = String::from(komodorpcutil::generate_body(
+        some_user.clone(),
+        method_name,
+        method_body,
+    ));
+    komodorpcutil::request(some_user.clone(), data)
 }
 
 /**
- * TODO 
+ * TODO
  * listtransactions ( "account" count from includeWatchonly )
 
 The listtransactions method returns up to count most recent transactions skipping the first from transactions for account.
@@ -714,10 +800,34 @@ Name	Type	Description
 "comment"	(string)	whether a comment is associated with the transaction
 "otheraccount"	(string)	for the move category of transactions; indicates the account which sent the funds (for receiving funds, positive amounts), or went to (for sending funds, negative amounts)
 "size"	(numeric)	transaction size in bytes
- * 
+ *
  */
 
- /** TODO 
+pub fn list_transactions(
+    some_user: komodorpcutil::KomodoRPC,
+    accoount: Option<String>,
+    count: Option<u32>,
+    from: Option<u32>,
+    include_watch_only: Option<bool>,
+) -> Result<(), reqwest::Error> {
+    let method_name: String = String::from("listtransactions");
+
+    let method_body: String = String::from("[\"")
+        + &"*".to_string()
+        + &String::from("\",")
+        + &count.unwrap_or(10).to_string()
+        + &from.unwrap_or(0).to_string()
+        + &String::from("]");
+
+    let data: String = String::from(komodorpcutil::generate_body(
+        some_user.clone(),
+        method_name,
+        method_body,
+    ));
+    komodorpcutil::request(some_user.clone(), data)
+}
+
+/** TODO
   * listunspent ( minconf maxconf ["address", ... ] )
 
 The listunspent method returns an array of unspent transaction outputs, with a range between minconf and maxconf (inclusive) confirmations. The method can, optionally, filter to only include txouts paid to specified addresses.
@@ -727,6 +837,7 @@ Name	Type	Description
 minconf	(numeric, optional, default=1)	the minimum confirmations to filter
 maxconf	(numeric, optional, default=9999999)	the maximum confirmations to filter
 "address"	(string)	a series of addresses
+
 #Response
 Name	Type	Description
 "txid"	(string)	the transaction id
@@ -740,7 +851,7 @@ Name	Type	Description
 "rawconfirmations"	(numeric)	the raw confirmations (number of blocks on top of this transaction's block)
   */
 
-  /**
+/**
    * TODO
    * lockunspent unlock [{ "txid": "txid", "vout": n }, ... ]
 
@@ -758,27 +869,30 @@ Name	Type	Description
 true/false	(boolean)	whether the command was successful
    */
 
-
-  /*
+/*
   resendwallettransactions
 
 The resendwallettransactions method immediately re-broadcasts unconfirmed wallet transactions to all peers. This method is intended only for testing; the wallet code periodically re-broadcasts automatically.
 
 #Arguments
 Name	Type	Description
-(none)		
+(none)
 #Response
 Name	Type	Description
 "transaction_id"	(string)	an array of the rebroadcasted transaction id's
   */
 
-  pub fn resend_wallet_transactions(SomeUser: komodorpcutil::KomodoRPC) ->Result<(), reqwest::Error>
-{
-    let method_name:String = String::from("resendwallettransactions");
-	let method_body:String = String::from("[]");
-	let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
-	komodorpcutil::request( SomeUser.clone(), data)
-  
+pub fn resend_wallet_transactions(
+    SomeUser: komodorpcutil::KomodoRPC,
+) -> Result<(), reqwest::Error> {
+    let method_name: String = String::from("resendwallettransactions");
+    let method_body: String = String::from("[]");
+    let data: String = String::from(komodorpcutil::generate_body(
+        SomeUser.clone(),
+        method_name,
+        method_body,
+    ));
+    komodorpcutil::request(SomeUser.clone(), data)
 }
 
 /** TODO
@@ -799,8 +913,7 @@ Name	Type	Description
 "transaction_id"	(string)	the transaction id for the send; only 1 transaction is created regardless of the number of addresses
  */
 
-
- /*
+/*
   * lockunspent unlock [{ "txid": "txid", "vout": n }, ... ]
 
 The lockunspent method locks (unlock = false) or unlocks (unlock = true) specified transaction outputs. A locked transaction output will not be chosen by automatic coin selection, when spending the relevant coin. The locks are stored in memory only; at runtime a node always starts with zero locked outputs, and the locked output list is always cleared when a node stops or fails.
@@ -817,21 +930,29 @@ Name	Type	Description
 true/false	(boolean)	whether the command was successful
   */
 
-  pub fn lock_unspent(someUser:komodorpcutil::KomodoRPC,
-    unlock:bool,
-    txid:String,
-    vout:u32)->Result<(),reqwest::Error>
-{
+pub fn lock_unspent(
+    someUser: komodorpcutil::KomodoRPC,
+    unlock: bool,
+    txid: String,
+    vout: u32,
+) -> Result<(), reqwest::Error> {
+    let  payload = "{\"jsonrpc\": \"1.0\", \"id\":\"curltest\", \"method\": \"lockunspent\", \"params\": [false, [{\"txid\":\"d7ba45296c66e16eb61f27a4eef8848c7f5579fe801f277c1b0e074a4f47d6fd\",\"vout\":0}]] }";
 
-let  payload = "{\"jsonrpc\": \"1.0\", \"id\":\"curltest\", \"method\": \"lockunspent\", \"params\": [false, [{\"txid\":\"d7ba45296c66e16eb61f27a4eef8848c7f5579fe801f277c1b0e074a4f47d6fd\",\"vout\":0}]] }";
+    let method_body = String::from("[")
+        + &unlock.to_string()
+        + &(",[{\"txid\":\"").to_string()
+        + &txid
+        + &("\",\"vout\":").to_string()
+        + &vout.to_string()
+        + &("}]]").to_string();
+    let method_name: String = String::from("lockunspent");
+    let data: String = String::from(komodorpcutil::generate_body(
+        someUser.clone(),
+        method_name,
+        method_body,
+    ));
 
-let method_body =String::from("[") + &unlock.to_string()+ &(",[{\"txid\":\"").to_string() + &txid +&("\",\"vout\":").to_string()
-+ &vout.to_string()+ &("}]]").to_string();
-let method_name:String = String::from("lockunspent"); 
-let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
-
-println!("the payload is{:?}",payload );
-println!("the body is{:?}",data );
-komodorpcutil::request( someUser.clone(), data)
+    println!("the payload is{:?}", payload);
+    println!("the body is{:?}", data);
+    komodorpcutil::request(someUser.clone(), data)
 }
-       

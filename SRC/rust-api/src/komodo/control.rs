@@ -3,7 +3,7 @@ Control
 The following RPC calls interact with the komodod software, and are made available through the komodo-cli software
 */
 
-use super:: komodorpcutil;
+use super::komodorpcutil;
 use komodorpcutil::KomodoRPC;
 
 /*
@@ -13,7 +13,7 @@ The getinfo method returns an object containing various state info.
 
 # Arguments
 Name	Type	Description
-(none)		
+(none)
 
 # Response
 Name	Type	Description
@@ -34,14 +34,16 @@ Name	Type	Description
 "relayfee"	(numeric)	minimum relay fee for non-free transactions in COIN/kB
 "errors"	(string)	any error messages
 */
-pub fn get_info(SomeUser: komodorpcutil::KomodoRPC) ->Result<(), reqwest::Error>
-{
-    let method_name:String = String::from("getinfo");
-	let method_body:String = String::from("[]");
-	let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
-	let result =komodorpcutil::request( SomeUser.clone(), data);
+pub fn get_info(SomeUser: komodorpcutil::KomodoRPC) -> Result<(), reqwest::Error> {
+    let method_name: String = String::from("getinfo");
+    let method_body: String = String::from("[]");
+    let data: String = String::from(komodorpcutil::generate_body(
+        SomeUser.clone(),
+        method_name,
+        method_body,
+    ));
+    let result = komodorpcutil::request(SomeUser.clone(), data);
     return result;
-
 }
 /**
  *help
@@ -54,34 +56,36 @@ Name	Type	Description
 "command"	(string, optional)	the command requiring assistance
 # Response
 Name	Type	Description
-"command"	(string, optional)	the command requiring assistance 
+"command"	(string, optional)	the command requiring assistance
  *
  */
-pub fn help(someUser: komodorpcutil::KomodoRPC,command:Option<String>) -> Result<(), reqwest::Error> { //TODO: need to implement optinal arg
-    let method_body:String;
+pub fn help(
+    someUser: komodorpcutil::KomodoRPC,
+    command: Option<String>,
+) -> Result<(), reqwest::Error> {
+    //TODO: need to implement optinal arg
+    let method_body: String;
     let temp_command = command.unwrap_or("".to_string()); //Default value is 0
-    if (!temp_command.is_empty())
-    {
-        method_body =String::from("[\"") + &temp_command+ "\"]";// String::from(format!("[/"{0}/"]",temp_top));
-    }
-    else
-    {
+    if (!temp_command.is_empty()) {
+        method_body = String::from("[\"") + &temp_command + "\"]"; // String::from(format!("[/"{0}/"]",temp_top));
+    } else {
         method_body = String::from("[]");
     }
 
-//let params = String::from("[") + &top.to_string()+"]"; 
+    //let params = String::from("[") + &top.to_string()+"]";
 
+    let method_name: String = String::from("help");
 
-let method_name:String = String::from("help");
-
-
-let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
-//println!("the payload is{}",payload);
-println!("the body is{:?}",data );
-let result = komodorpcutil::request( someUser.clone(), data);
-return result;
-
-} 
+    let data: String = String::from(komodorpcutil::generate_body(
+        someUser.clone(),
+        method_name,
+        method_body,
+    ));
+    //println!("the payload is{}",payload);
+    println!("the body is{:?}", data);
+    let result = komodorpcutil::request(someUser.clone(), data);
+    return result;
+}
 /**
  * stop
 
@@ -93,18 +97,20 @@ Forcefully stopping the chain should be avoided, as it may corrupt the local dat
 
 # Arguments
 Name	Type	Description
-(none)		
+(none)
 # Response
 Name	Type	Description
-Komodo server stopping		
+Komodo server stopping
 [COIN] Komodo server stopping
  */
-pub fn stop(SomeUser: komodorpcutil::KomodoRPC) ->Result<(), reqwest::Error>
-{
-    let method_name:String = String::from("stop");
-	let method_body:String = String::from("[]");
-	let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
-	let result =komodorpcutil::request( SomeUser.clone(), data);
+pub fn stop(SomeUser: komodorpcutil::KomodoRPC) -> Result<(), reqwest::Error> {
+    let method_name: String = String::from("stop");
+    let method_body: String = String::from("[]");
+    let data: String = String::from(komodorpcutil::generate_body(
+        SomeUser.clone(),
+        method_name,
+        method_body,
+    ));
+    let result = komodorpcutil::request(SomeUser.clone(), data);
     return result;
-
 }

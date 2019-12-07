@@ -1,4 +1,4 @@
-use super:: komodorpcutil;
+use super::komodorpcutil;
 use komodorpcutil::KomodoRPC;
 
 /**
@@ -13,24 +13,28 @@ Name	Type	Description
 "command"	(string, required)	'add' to add a node to the list, 'remove' to remove a node from the list, 'onetry' to try a connection to the node once
 #Response
 Name	Type	Description
-(none)		
+(none)
  */
-pub fn add_node(someUser:komodorpcutil::KomodoRPC, node:String, command:String)->Result<(),reqwest::Error>
-{
-  
-  let method_body =String::from("[\"") + &node+ &"\", \"".to_string()+ &command+ "\"]";// String::from(format!("[/"{0}/"]",temp_top));
-   
+pub fn add_node(
+    someUser: komodorpcutil::KomodoRPC,
+    node: String,
+    command: String,
+) -> Result<(), reqwest::Error> {
+    let method_body = String::from("[\"") + &node + &"\", \"".to_string() + &command + "\"]"; // String::from(format!("[/"{0}/"]",temp_top));
 
+    let method_name: String = String::from("addnode");
+    let data: String = String::from(komodorpcutil::generate_body(
+        someUser.clone(),
+        method_name,
+        method_body,
+    ));
 
-let method_name:String = String::from("addnode"); 
-let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
+    let payload = "{\"jsonrpc\": \"1.0\", \"id\":\"curltest\",  \"method\": \"addnode\", \"params\": [\"192.168.0.6:8233\", \"onetry\"] }\n";
 
-let payload = "{\"jsonrpc\": \"1.0\", \"id\":\"curltest\",  \"method\": \"addnode\", \"params\": [\"192.168.0.6:8233\", \"onetry\"] }\n";
-
-println!("the payload is{:?}",payload);
-println!("the body is{:?}",data );
-let result = komodorpcutil::request( someUser.clone(), data);
-return result;
+    println!("the payload is{:?}", payload);
+    println!("the body is{:?}", data);
+    let result = komodorpcutil::request(someUser.clone(), data);
+    return result;
 }
 
 /**
@@ -40,19 +44,21 @@ The clearbanned method clears all banned IPs.
 
 #Arguments
 Name	Type	Description
-(none)		
+(none)
 #Response
 Name	Type	Description
-(none)		
+(none)
  */
-pub fn clear_banned(SomeUser: komodorpcutil::KomodoRPC) ->Result<(), reqwest::Error>
-{
-    let method_name:String = String::from("clearbanned");
-	let method_body:String = String::from("[]");
-	let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
-	let result =komodorpcutil::request( SomeUser.clone(), data);
+pub fn clear_banned(SomeUser: komodorpcutil::KomodoRPC) -> Result<(), reqwest::Error> {
+    let method_name: String = String::from("clearbanned");
+    let method_body: String = String::from("[]");
+    let data: String = String::from(komodorpcutil::generate_body(
+        SomeUser.clone(),
+        method_name,
+        method_body,
+    ));
+    let result = komodorpcutil::request(SomeUser.clone(), data);
     return result;
-
 }
 /**
  * disconnectnode
@@ -69,18 +75,22 @@ Name	Type	Description
 Name	Type	Description
 (none)
  */
-pub fn disconnect_node(someUser:komodorpcutil::KomodoRPC, node:String)->Result<(),reqwest::Error>
-{
-  
-  let method_body =String::from("[\"") + &node+ "\"]";// String::from(format!("[/"{0}/"]",temp_top));
-   
-let method_name:String = String::from("disconnectnode"); 
-let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
+pub fn disconnect_node(
+    someUser: komodorpcutil::KomodoRPC,
+    node: String,
+) -> Result<(), reqwest::Error> {
+    let method_body = String::from("[\"") + &node + "\"]"; // String::from(format!("[/"{0}/"]",temp_top));
 
+    let method_name: String = String::from("disconnectnode");
+    let data: String = String::from(komodorpcutil::generate_body(
+        someUser.clone(),
+        method_name,
+        method_body,
+    ));
 
-println!("the body is{:?}",data );
-let result = komodorpcutil::request( someUser.clone(), data);
-return result;
+    println!("the body is{:?}", data);
+    let result = komodorpcutil::request(someUser.clone(), data);
+    return result;
 }
 
 /**
@@ -99,27 +109,32 @@ dns	(boolean, required)	if false, only a list of added nodes will be provided; o
 "node"	(string, optional)	if provided, the method returns information about this specific node; otherwise, all nodes are returned
  */
 pub fn get_added_node_info(
-	SomeUser: komodorpcutil::KomodoRPC,
-	dns:bool,
-	node:Option<String>) 
-	->Result<(), reqwest::Error>
-{
-	let method_body:String;
-	let temp_node:String = node.unwrap_or("".to_string());// default -1///TO DO
-    if (temp_node.is_empty())
+    SomeUser: komodorpcutil::KomodoRPC,
+    dns: bool,
+    node: Option<String>,
+) -> Result<(), reqwest::Error> {
+    let method_body: String;
+    let temp_node: String = node.unwrap_or("".to_string()); // default -1///TO DO
+    if (temp_node.is_empty()) {
+        method_body = String::from("[") + &dns.to_string() + &String::from("]");
+    } else
+    //if (!temp_gen_proc_limit.is_empty())
     {
-		method_body = String::from("[") + &dns.to_string()+ &String::from("]");
+        method_body = String::from("[")
+            + &dns.to_string()
+            + &",".to_string()
+            + &temp_node
+            + &String::from("]");
     }
-    else//if (!temp_gen_proc_limit.is_empty())
-    {
-		method_body = String::from("[") + &dns.to_string()+ &",".to_string()+ &temp_node+&String::from("]");
-	  }
-	
-    
-    let method_name:String = String::from("getaddednodeinfo");
-    let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
-    println!("the body is{:?}",data );
-	let result =komodorpcutil::request( SomeUser.clone(), data);
+
+    let method_name: String = String::from("getaddednodeinfo");
+    let data: String = String::from(komodorpcutil::generate_body(
+        SomeUser.clone(),
+        method_name,
+        method_body,
+    ));
+    println!("the body is{:?}", data);
+    let result = komodorpcutil::request(SomeUser.clone(), data);
     return result;
 }
 
@@ -130,25 +145,26 @@ The getconnectioncount method returns the number of connections to other nodes.
 
 #Arguments
 Name	Type	Description
-(none)		
+(none)
 
 #Response
 Name	Type	Description
 n	(numeric)	the connection count
  */
 
-pub fn get_connection_count(someUser:komodorpcutil::KomodoRPC)-> Result<(),reqwest::Error>{
+pub fn get_connection_count(someUser: komodorpcutil::KomodoRPC) -> Result<(), reqwest::Error> {
+    let params = String::from("[") + "]";
 
-  let params =String::from("[")+ "]";
-
-      
-  let method_name:String = String::from("getconnectioncount");
-      let method_body:String = String::from(params);
-      let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
-      println!("the body is{:?}",data );
-      let result = komodorpcutil::request( someUser.clone(), data);
-      return result;
-
+    let method_name: String = String::from("getconnectioncount");
+    let method_body: String = String::from(params);
+    let data: String = String::from(komodorpcutil::generate_body(
+        someUser.clone(),
+        method_name,
+        method_body,
+    ));
+    println!("the body is{:?}", data);
+    let result = komodorpcutil::request(someUser.clone(), data);
+    return result;
 }
 
 /**
@@ -161,7 +177,7 @@ This method is applicable only to the KMD main net.
 
 #Arguments
 Name	Type	Description
-(none)		
+(none)
 #Response
 Name	Type	Description
 "version"	(numeric)	the server version
@@ -169,18 +185,19 @@ Name	Type	Description
 "deprecationheight"	(numeric)	the block height at which this version will deprecate and shut down (unless disabledeprecation is set)
  */
 
-pub fn get_deprecation_info(someUser:komodorpcutil::KomodoRPC)-> Result<(),reqwest::Error>{
+pub fn get_deprecation_info(someUser: komodorpcutil::KomodoRPC) -> Result<(), reqwest::Error> {
+    let params = String::from("[") + "]";
 
-  let params =String::from("[")+ "]";
-
-      
-  let method_name:String = String::from("getdeprecationinfo");
-      let method_body:String = String::from(params);
-      let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
-      println!("the body is{:?}",data );
-      let result = komodorpcutil::request( someUser.clone(), data);
-      return result;
-
+    let method_name: String = String::from("getdeprecationinfo");
+    let method_body: String = String::from(params);
+    let data: String = String::from(komodorpcutil::generate_body(
+        someUser.clone(),
+        method_name,
+        method_body,
+    ));
+    println!("the body is{:?}", data);
+    let result = komodorpcutil::request(someUser.clone(), data);
+    return result;
 }
 
 /**
@@ -191,7 +208,7 @@ The getnettotals method returns information about network traffic, including byt
 
 #Arguments
 Name	Type	Description
-(none)		
+(none)
 #Response
 Name	Type	Description
 "totalbytesrecv"	(numeric)	total bytes received
@@ -199,19 +216,19 @@ Name	Type	Description
 "timemillis"	(numeric)	total cpu time
  */
 
- 
-pub fn get_net_totals(someUser:komodorpcutil::KomodoRPC)-> Result<(),reqwest::Error>{
+pub fn get_net_totals(someUser: komodorpcutil::KomodoRPC) -> Result<(), reqwest::Error> {
+    let params = String::from("[") + "]";
 
-  let params =String::from("[")+ "]";
-
-      
-  let method_name:String = String::from("getnettotals");
-      let method_body:String = String::from(params);
-      let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
-      println!("the body is{:?}",data );
-      let result = komodorpcutil::request( someUser.clone(), data);
-      return result;
-
+    let method_name: String = String::from("getnettotals");
+    let method_body: String = String::from(params);
+    let data: String = String::from(komodorpcutil::generate_body(
+        someUser.clone(),
+        method_name,
+        method_body,
+    ));
+    println!("the body is{:?}", data);
+    let result = komodorpcutil::request(someUser.clone(), data);
+    return result;
 }
 
 /**
@@ -222,7 +239,7 @@ The getnetworkinfo method returns an object containing various state info regard
 
 #Arguments
 Name	Type	Description
-(none)		
+(none)
 #Response
 Name	Type	Description
 "version"	(numeric)	the server version
@@ -244,19 +261,19 @@ Name	Type	Description
 "warnings"	(string)	any network warnings (such as alert messages)
  */
 
- 
-pub fn get_network_info(someUser:komodorpcutil::KomodoRPC)-> Result<(),reqwest::Error>{
+pub fn get_network_info(someUser: komodorpcutil::KomodoRPC) -> Result<(), reqwest::Error> {
+    let params = String::from("[") + "]";
 
-  let params =String::from("[")+ "]";
-
-      
-  let method_name:String = String::from("getnetworkinfo");
-      let method_body:String = String::from(params);
-      let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
-      println!("the body is{:?}",data );
-      let result = komodorpcutil::request( someUser.clone(), data);
-      return result;
-
+    let method_name: String = String::from("getnetworkinfo");
+    let method_body: String = String::from(params);
+    let data: String = String::from(komodorpcutil::generate_body(
+        someUser.clone(),
+        method_name,
+        method_body,
+    ));
+    println!("the body is{:?}", data);
+    let result = komodorpcutil::request(someUser.clone(), data);
+    return result;
 }
 
 /**
@@ -266,7 +283,7 @@ The getpeerinfo method returns data about each connected network node as a json 
 
 #Arguments
 Name	Type	Description
-(none)		
+(none)
 #Response
 Name	Type	Description
 "id"	(numeric)	peer index
@@ -288,22 +305,23 @@ Name	Type	Description
 "banscore"	(numeric)	the ban score
 "synced_headers"	(numeric)	the last header we have in common with this peer
 "synced_blocks"	(numeric)	the last block we have in common with this peer
-"inflight": [ ... ]	(array)	
+"inflight": [ ... ]	(array)
 number	(numeric)	the block height requested from this peer
  */
 
-pub fn get_peer_info(someUser:komodorpcutil::KomodoRPC)-> Result<(),reqwest::Error>{
+pub fn get_peer_info(someUser: komodorpcutil::KomodoRPC) -> Result<(), reqwest::Error> {
+    let params = String::from("[") + "]";
 
-  let params =String::from("[")+ "]";
-
-      
-  let method_name:String = String::from("getpeerinfo");
-      let method_body:String = String::from(params);
-      let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
-      println!("the body is{:?}",data );
-      let result = komodorpcutil::request( someUser.clone(), data);
-      return result;
-
+    let method_name: String = String::from("getpeerinfo");
+    let method_body: String = String::from(params);
+    let data: String = String::from(komodorpcutil::generate_body(
+        someUser.clone(),
+        method_name,
+        method_body,
+    ));
+    println!("the body is{:?}", data);
+    let result = komodorpcutil::request(someUser.clone(), data);
+    return result;
 }
 /**
  * listbanned
@@ -312,25 +330,26 @@ The listbanned method lists all banned IP addresses and subnets.
 
 #Arguments
 Name	Type	Description
-(none)		
+(none)
 #Response
 Name	Type	Description
 "address"	(string)	the address/subnet that is banned
 "banned_until"	(numeric)	the timestamp, at which point the ban will be removed
  */
 
-pub fn list_banned(someUser:komodorpcutil::KomodoRPC)-> Result<(),reqwest::Error>{
+pub fn list_banned(someUser: komodorpcutil::KomodoRPC) -> Result<(), reqwest::Error> {
+    let params = String::from("[") + "]";
 
-  let params =String::from("[")+ "]";
-
-      
-  let method_name:String = String::from("listbanned");
-      let method_body:String = String::from(params);
-      let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
-      println!("the body is{:?}",data );
-      let result = komodorpcutil::request( someUser.clone(), data);
-      return result;
-
+    let method_name: String = String::from("listbanned");
+    let method_body: String = String::from(params);
+    let data: String = String::from(komodorpcutil::generate_body(
+        someUser.clone(),
+        method_name,
+        method_body,
+    ));
+    println!("the body is{:?}", data);
+    let result = komodorpcutil::request(someUser.clone(), data);
+    return result;
 }
 
 /**
@@ -346,24 +365,25 @@ Use getpeerinfo to see ping results.
 
 #Arguments
 Name	Type	Description
-(none)		
+(none)
 #Response
 Name	Type	Description
-(none)		
+(none)
 
  */
-pub fn ping(someUser:komodorpcutil::KomodoRPC)-> Result<(),reqwest::Error>{
+pub fn ping(someUser: komodorpcutil::KomodoRPC) -> Result<(), reqwest::Error> {
+    let params = String::from("[") + "]";
 
-  let params =String::from("[")+ "]";
-
-      
-  let method_name:String = String::from("ping");
-      let method_body:String = String::from(params);
-      let data:String = String::from (komodorpcutil::generate_body(someUser.clone(),method_name,method_body));
-      println!("the body is{:?}",data );
-      let result = komodorpcutil::request( someUser.clone(), data);
-      return result;
-
+    let method_name: String = String::from("ping");
+    let method_body: String = String::from(params);
+    let data: String = String::from(komodorpcutil::generate_body(
+        someUser.clone(),
+        method_name,
+        method_body,
+    ));
+    println!("the body is{:?}", data);
+    let result = komodorpcutil::request(someUser.clone(), data);
+    return result;
 }
 
 /**
@@ -381,34 +401,51 @@ bantime	(numeric, optional)	indicates how long (in seconds) the ip is banned (or
 absolute	(boolean, optional)	if set to true, the bantime must be an absolute timestamp (in seconds) since epoch (Jan 1 1970 GMT)
  */
 pub fn set_ban(
-  SomeUser: komodorpcutil::KomodoRPC,
-  ip:String,
-  command:String,
-	bantime:Option<u32>,
-	absolute:Option<bool>)
-	->Result<(), reqwest::Error>
-{
-	let method_body:String;
-	let temp_bantime = bantime.unwrap_or(0); //Default value is 0
-	let temp_absolute:String = absolute.unwrap_or(true).to_string();
-    if (!(temp_bantime==0) && !(temp_absolute.is_empty()))
+    SomeUser: komodorpcutil::KomodoRPC,
+    ip: String,
+    command: String,
+    bantime: Option<u32>,
+    absolute: Option<bool>,
+) -> Result<(), reqwest::Error> {
+    let method_body: String;
+    let temp_bantime = bantime.unwrap_or(0); //Default value is 0
+    let temp_absolute: String = absolute.unwrap_or(true).to_string();
+    if (!(temp_bantime == 0) && !(temp_absolute.is_empty())) {
+        method_body = String::from("[")
+            + &ip
+            + &"".to_string()
+            + &command
+            + &",".to_string()
+            + &temp_bantime.to_string()
+            + &",".to_string()
+            + &temp_absolute
+            + &String::from("]");
+    } else if (!(temp_bantime == 0) && (temp_absolute.is_empty())) {
+        method_body = String::from("[")
+            + &ip
+            + &"".to_string()
+            + &command
+            + &",".to_string()
+            + &temp_bantime.to_string()
+            + &String::from("]");
+    } else
+    //  ((temp_bantime==0) && !(temp_absolute.is_empty()))
     {
-      method_body = String::from("[") + &ip+&"".to_string()+ &command+ &",".to_string()+
-      &temp_bantime.to_string()+ &",".to_string()+ &temp_absolute+ &String::from("]");
-    }
-   else if (!(temp_bantime==0) && (temp_absolute.is_empty()))
-    {
-      method_body = String::from("[") + &ip+&"".to_string()+ &command+ &",".to_string()+
-      &temp_bantime.to_string()+  &String::from("]");
-	  }
-   else//  ((temp_bantime==0) && !(temp_absolute.is_empty()))
-    {
-    method_body = String::from("[") + &ip+&"".to_string()+ &command+ &",".to_string()+
-    &temp_absolute.to_string()+  &String::from("]");	
+        method_body = String::from("[")
+            + &ip
+            + &"".to_string()
+            + &command
+            + &",".to_string()
+            + &temp_absolute.to_string()
+            + &String::from("]");
     }
 
-    let method_name:String = String::from("setban");
-	  let data:String = String::from (komodorpcutil::generate_body(SomeUser.clone(),method_name,method_body));
-	  let result =komodorpcutil::request( SomeUser.clone(), data);
+    let method_name: String = String::from("setban");
+    let data: String = String::from(komodorpcutil::generate_body(
+        SomeUser.clone(),
+        method_name,
+        method_body,
+    ));
+    let result = komodorpcutil::request(SomeUser.clone(), data);
     return result;
 }
