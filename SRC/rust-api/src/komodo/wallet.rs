@@ -385,6 +385,108 @@ pub fn z_get_operation_result(
 
 
 // TODO: arrays as argument?
+pub fn z_get_operation_status(
+    some_user: komodorpcutil::KomodoRPC,
+    operation_id: Option<String>)
+    ->Result<(), reqwest::Error>
+{
+    
+    let method_name: String = String::from("z_getoperationstatus");
+    
+    let temp_operation_id: String = operation_id.unwrap_or("".to_string());
+    let method_body: String = String::from("[[\"")
+                    + &temp_operation_id.to_string()
+                    + &String::from("\"]]");
+    
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
+    
+    return result;
+    
+}
+
+
+
+pub fn z_get_total_balance(
+    some_user: komodorpcutil::KomodoRPC,
+    minconf: Option<u32>,
+    include_watch_only: Option<bool>)
+    ->Result<(), reqwest::Error>
+{
+    
+    let method_name: String = String::from("z_gettotalbalance");
+    let temp_minconf = minconf.unwrap_or(1);
+    let temp_include_watch_only = include_watch_only.unwrap_or(false);
+    let method_body: String = String::from("[")
+                    + &temp_minconf.to_string()
+                    + &String::from(",")
+                    + &temp_include_watch_only.to_string()
+                    + &String::from("]");
+    
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
+    
+    return result;
+    
+}
+
+
+pub fn z_import_key(
+    some_user: komodorpcutil::KomodoRPC,
+    z_private_key: String,
+    rescan: Option<String>,
+    start_height: Option<u32>)
+    ->Result<(), reqwest::Error>
+{
+    
+    let method_name: String = String::from("z_importkey");
+    let temp_rescan = rescan.unwrap_or("whenkeyisnew".to_string());
+    let temp_start_height = start_height.unwrap_or(0);
+    let method_body: String = String::from("[\"")
+                    + &z_private_key.to_string()
+                    + &String::from("\",\"")
+                    + &temp_rescan.to_string()
+                    + &String::from("\",")
+                    + &temp_start_height.to_string()
+                    + &String::from("]");
+    
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
+    
+    return result;
+    
+}
+
+
+
+pub fn z_import_viewing_key(
+    some_user: komodorpcutil::KomodoRPC,
+    z_private_key: String,
+    rescan: Option<String>,
+    start_height: Option<u32>)
+    ->Result<(), reqwest::Error>
+{
+    
+    let method_name: String = String::from("z_importviewingkey");
+    let temp_rescan = rescan.unwrap_or("whenkeyisnew".to_string());
+    let temp_start_height = start_height.unwrap_or(0);
+    let method_body: String = String::from("[\"")
+                    + &z_private_key.to_string()
+                    + &String::from("\",\"")
+                    + &temp_rescan.to_string()
+                    + &String::from("\",")
+                    + &temp_start_height.to_string()
+                    + &String::from("]");
+    
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
+    
+    return result;
+    
+}
+
+
+
 pub fn z_import_wallet(
     some_user: komodorpcutil::KomodoRPC,
     file_name: String)
@@ -403,6 +505,27 @@ pub fn z_import_wallet(
     return result;
     
 }
+
+
+pub fn z_list_addresses(
+    some_user: komodorpcutil::KomodoRPC
+    include_watch_only: Option<bool>)
+    ->Result<(), reqwest::Error>
+{
+    
+    let method_name: String = String::from("z_listaddresses");
+    let temp_include_watch_only = include_watch_only.unwrap_or(false);
+    let method_body: String = String::from("[")
+                    + &include_watch_only.to_string()
+                    + &String::from("]");
+    
+    let data: String = String::from(komodorpcutil::generate_body(some_user.clone(), method_name, method_body));
+    let result = komodorpcutil::request(some_user.clone(), data);
+    
+    return result;
+    
+}
+
 
 
 // TODO: handle if empty case
@@ -426,6 +549,10 @@ pub fn z_list_operation_ids(
 }
 
 
+
+
+
+// WARNING: UNFINISHED METHOD
 pub fn z_listreceivedbyaddress(
     some_user: komodorpcutil::KomodoRPC
     include_watch_only: Option<bool>)
