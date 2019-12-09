@@ -37,14 +37,53 @@ pub fn get_block_subsidy(
     return result;
 
 }
-/*
-TODO getblocktemplate
-Requires a JSON object plus a few optionals.
-Need to check to understand this one.
+/*The getblocktemplate method returns data that is necessary to construct a block.
+If the request parameters include a mode key, it is used to explicitly select between the default 'template' request, a 'proposal' or 'disablecb'.
 
+# Arguments
+Name	         Type	                Description
+"mode"	         (string, optional)	    the block height 
+"capabilities"   (array, optional)      a list of strings
+"support"        (string)               client side supported features: "longpoll", "coinbasetxn", "coinbasevalue", "proposal", "serverlist", "workid"  
 
+# Response
+Large amount of return values.
+*/ 
+pub fn get_block_template(
+    some_user: komodorpcutil::KomodoRPC,
+    mode_supplied: Option<String>,
+    capabilities: Vec<String>,
+    support: String)
+     -> Result<(), reqwest::Error> {
+    let method_name:String = String::from("getblocktemplate");
+    let method_body:String;
+    let mode = mode_supplied.unwrap_or("".to_string());
+    let mut cap_list = String::from("[");
+    if(capabilities[0] != "".to_string()){
+        for cap in &capabilities{ 
+            cap_list = cap_list + "\"" + cap + "\"" + &",";
+        }
+        cap_list = cap_list[0..(cap_list.len()-1)].to_string(); //cut last ,
+        cap_list = cap_list + &"]";
+    }
+    else{
+        cap_list = "".to_string();
+    }
+    if(mode != "".to_string()){
+        method_body = String::from("{\"mode\":\"") + &mode.to_string() + &String::from(", \"capabilities\":")+ &cap_list+ &String::from(", \"support\":") + &support.to_string() + "}";
+    }
+    else{
+        method_body = String::from("{\"capabilities\":")+ &cap_list+ &String::from(", \"support\":") + &support.to_string() + "}";
+    }
+  	
+    let data:String = String::from (komodorpcutil::generate_body(some_user.clone(),method_name,method_body));
+    println!("the body is{:?}",data );
+    let result = komodorpcutil::request(some_user.clone(), data);
+    return result;
+}
 
-*/
+ 
+
 
 
 
@@ -52,6 +91,7 @@ Need to check to understand this one.
 
 # Arguments
 Name	    Type	            Description
+(none)      (none)
 
 # Response
 Name	    Type     	        Description
@@ -110,7 +150,7 @@ Pass in height to estimate the network speed at the time when a certain block wa
 # Arguments
 Name	    Type	            Description
 "blocks"	(u32, optional)	    the number of blocks   (Defaults to 120)
-"height"    (int, optional)     the block height that corresponds to the requested data    (Defaults to -1)
+"height"    (u32, optional)     the block height that corresponds to the requested data    (Defaults to -1)
 
 # Response
 Name	    Type     	        Description
@@ -120,24 +160,90 @@ Name	    Type     	        Description
 pub fn get_network_solps(
     some_user: komodorpcutil::KomodoRPC,
     blocks_supplied: Option<u32>,
-    height_supplied: Option<int>)
+    height_supplied: Option<u32>)
      -> Result<(), reqwest::Error> {
 
 
     let method_name:String = String::from("getnetworksolps");
     let method_body:String;
-	let height = height_supplied.unwrap_or(0);
-	if height >= 0
+    let blocks = blocks_supplied.unwrap_or(0);
+    let height = height_supplied.unwrap_or(0);
+    println!("Creating body");
+	if (blocks > 0) && (height > 0)
 	{
-		method_body = String::from(format!("[{0}]",height));
+		method_body = String::from("[\"blocks\": \"") + &blocks.to_string()+ &String::from(" \", \"height\" : ") + &height.to_string() + &String::from("]");
 	}
-	else
+	else if (blocks > 0) && (height <= 0)
 	{
-		method_body = String::from("[]");
-	}
+		method_body = String::from("[\"blocks\": \"") + &blocks.to_string()+ &String::from(" \"]");		
+    }
+    else if (blocks <= 0) && (height > 0)
+    {
+        method_body = String::from("[\"height\": \"") + &height.to_string()+ &String::from(" \"]");
+    }
+    else
+    {
+        method_body = String::from("[]");
+    }
     let data:String = String::from (komodorpcutil::generate_body(some_user.clone(),method_name,method_body));
-    println!("the body is{:?}",data );
+    println!("the body is{:?}",data);
     let result = komodorpcutil::request( some_user.clone(), data);
     return result;
 
 }
+
+/* The prioritisetransaction method instructs the daemon to accept the indicated transaction into mined blocks at a higher (or lower) priority. 
+The transaction selection algorithm considers the transaction as it would have a higher priority.
+
+# Arguments
+Name	            Type	            Description
+"transaction_id"	(string, required)	the transaction id
+"priority_delta"    (u32, required)     the priority to add or subtract (if negative). 
+                                        The transaction selection algorithm assigns the tx a higher or lower priority. 
+                                        The transaction priority calculation: coinage * value_in_satoshis / txsize
+"fee_delta"         (u32, required)     the fee value in satoshis to add or subtract (if negative); 
+                                        the fee is not actually paid, only the algorithm for selecting transactions into a block considers the transaction as if it paid a higher (or lower) fee
+
+# Response
+Name	    Type     	        Description
+"true"   	(boolean)	        returns true
+
+*/
+pub fn prioritise_transaction(
+    some_user: komodorpcutil::KomodoRPC,
+    transaction_id: String,
+    priority_delta: u32,
+    fee_delta: u32)
+     -> Result<(), reqwest::Error> {
+        let method_name:String = String::from("prioritisetransaction");
+        let method_body:String;
+        method_body = String::from("[\"transaction_id\": \"") + &transaction_id.to_string()+ &String::from(" \", \"priority_delta\" : ") + 
+            &priority_delta.to_string() + &String::from(" \", \"fee_delta\" : ") + &fee_delta.to_string() + &String::from("]");
+        let data:String = String::from (komodorpcutil::generate_body(some_user.clone(),method_name,method_body));
+        println!("the body is{:?}",data );
+        let result = komodorpcutil::request( some_user.clone(), data);
+        return result;
+    
+    }
+
+pub fn submit_block(
+    some_user: komodorpcutil::KomodoRPC,
+    hexdata: String,
+    workid_supplied: Option<String>)
+     -> Result<(), reqwest::Error> {
+        let workid = workid_supplied.unwrap_or("".to_string());
+        let method_name:String = String::from("submitblock");
+        let method_body:String;
+        if (workid == "".to_string())
+        {
+            method_body = String::from("[\"hexdata\": \"") + &hexdata.to_string()+ &String::from("]");
+        }
+        else
+        {
+            method_body = String::from("[\"hexdata\": \"") + &hexdata.to_string()+ &String::from(" \", \"workid\" : ") + &workid.to_string();
+        }
+        let data:String = String::from (komodorpcutil::generate_body(some_user.clone(),method_name,method_body));
+        println!("the body is{:?}",data );
+        let result = komodorpcutil::request( some_user.clone(), data);
+        return result;
+    }
