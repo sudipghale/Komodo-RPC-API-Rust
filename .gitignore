@@ -1,4 +1,3 @@
-SRC/rust-api/target/
-SRC/rust-api/Cargo.lock
-SRC/rust-api/Cargo.toml
-SRC/rust-api/SRC/main.rs
+target/
+*.lock
+
