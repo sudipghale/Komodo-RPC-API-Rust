@@ -1,3 +1,4 @@
+#![allow(warnings)]
 /**
  * Disclosure
 The following RPC calls interact with the komodod software, and are made available through the komodo-cli software
@@ -27,30 +28,28 @@ pub fn z_get_payment_disclosure(
     js_index: String,
     output_index: String,
     message: Option<String>,
-) -> Result<(), reqwest::Error> {
+) -> Result<String, reqwest::Error> {
     let method_body: String;
     let temp_message = message.unwrap_or("".to_string()); //Default value is 0
     if (!temp_message.is_empty()) {
         method_body = String::from("[\"")
             + &txid
-            + &",".to_string()
+            + &"\",".to_string()
             + &js_index
             + &",".to_string()
             + &output_index
-            + &",".to_string()
+            + &",\"".to_string()
             + &temp_message
             + "\"]"; // String::from(format!("[/"{0}/"]",temp_top));
     } else {
         method_body = String::from("[\"")
             + &txid
-            + &",".to_string()
+            + &"\",".to_string()
             + &js_index
             + &",".to_string()
             + &output_index
-            + "\"]";
+            + "]";
     }
-
-    //let params = String::from("[") + &top.to_string()+"]";
 
     let method_name: String = String::from("z_getpaymentdisclosure");
 
@@ -59,10 +58,7 @@ pub fn z_get_payment_disclosure(
         method_name,
         method_body,
     ));
-    //println!("the payload is{}",payload);
-    println!("the body is{:?}", data);
-    let result = komodorpcutil::request(someUser.clone(), data);
-    return result;
+    komodorpcutil::request(someUser.clone(), data)
 }
 
 /**
@@ -83,7 +79,7 @@ Name	Type	Description
 pub fn z_validate_payment_disclosure(
     someUser: komodorpcutil::KomodoRPC,
     paymentdisclosure: String,
-) -> Result<(), reqwest::Error> {
+) -> Result<String, reqwest::Error> {
     let params = String::from("[\"") + &paymentdisclosure + "\"]"; // String::from(format!("[/"{0}/"]",temp_top));
 
     let method_name: String = String::from("z_validatepaymentdisclosure");
@@ -94,8 +90,5 @@ pub fn z_validate_payment_disclosure(
         method_body,
     ));
 
-    //println!("the payload is{}",payload);
-    println!("the body is{:?}", data);
-    let result = komodorpcutil::request(someUser.clone(), data);
-    return result;
+    komodorpcutil::request(someUser.clone(), data)
 }

@@ -1,3 +1,4 @@
+#![allow(warnings)]
 use super::komodorpcutil;
 use komodorpcutil::KomodoRPC;
 
@@ -17,10 +18,10 @@ Name	Type	Description
 blockhashes	(array)	hashes of blocks generated
  */
 
-pub fn generate(someUser: komodorpcutil::KomodoRPC, numblocks: u32) -> Result<(), reqwest::Error> {
+pub fn generate(someUser: komodorpcutil::KomodoRPC, numblocks: u32) -> Result<String, reqwest::Error> {
+    ///THE DOCUMENTATION IN DOCS.KOMODOPLATFORM.COM IS INCOMPLETE
     let params = String::from("[") + &numblocks.to_string() + "]";
 
-    let payload= "{\"jsonrpc\": \"1.0\", \"id\":\"curltest\",  \"method\": \"generate\", \"params\": [2] }\n";
     let method_name: String = String::from("generate");
     let method_body: String = String::from(params);
     let data: String = String::from(komodorpcutil::generate_body(
@@ -28,10 +29,8 @@ pub fn generate(someUser: komodorpcutil::KomodoRPC, numblocks: u32) -> Result<()
         method_name,
         method_body,
     ));
-    println!("the payload is:{:?}", payload);
-    println!("the body is{:?}", data);
-    let result = komodorpcutil::request(someUser.clone(), data);
-    return result;
+
+    komodorpcutil::request(someUser.clone(), data)
 }
 /**
   * getgenerate
@@ -49,11 +48,9 @@ Name	Type	Description
 Name	Type	Description
 true/false	(boolean)	indicates whether the server is set to generate coins
   */
-pub fn get_generate(someUser: komodorpcutil::KomodoRPC) -> Result<(), reqwest::Error> {
-    let params = String::from("[") + "]";
+pub fn get_generate(someUser: komodorpcutil::KomodoRPC) -> Result<String, reqwest::Error> {
+    let params = String::from("[]");
 
-    let payload =
-        "{\"jsonrpc\": \"1.0\", \"id\":\"curltest\",  \"method\": \"generate\", \"params\": [] }\n";
     let method_name: String = String::from("getgenerate");
     let method_body: String = String::from(params);
     let data: String = String::from(komodorpcutil::generate_body(
@@ -61,10 +58,7 @@ pub fn get_generate(someUser: komodorpcutil::KomodoRPC) -> Result<(), reqwest::E
         method_name,
         method_body,
     ));
-    println!("the payload is:{:?}", payload);
-    println!("the body is{:?}", data);
-    let result = komodorpcutil::request(someUser.clone(), data);
-    return result;
+    komodorpcutil::request(someUser.clone(), data)
 }
 
 /**
@@ -90,7 +84,7 @@ pub fn set_generate(
     SomeUser: komodorpcutil::KomodoRPC,
     generate: bool,
     gen_proc_limit: Option<u32>,
-) -> Result<(), reqwest::Error> {
+) -> Result<String, reqwest::Error> {
     let method_body: String;
     let temp_gen_proc_limit: String = gen_proc_limit.unwrap_or(1).to_string(); // default -1///TO DO
     if (temp_gen_proc_limit.is_empty()) {
@@ -105,16 +99,29 @@ pub fn set_generate(
             + &String::from("]");
     }
 
-    let payload= "{\"jsonrpc\": \"1.0\", \"id\":\"curltest\",  \"method\": \"setgenerate\", \"params\": [true, 1] }\n";
-
     let method_name: String = String::from("setgenerate");
     let data: String = String::from(komodorpcutil::generate_body(
         SomeUser.clone(),
         method_name,
         method_body,
     ));
-    println!("the payload is:{:?}", payload);
-    println!("the body is{:?}", data);
-    let result = komodorpcutil::request(SomeUser.clone(), data);
-    return result;
+    komodorpcutil::request(SomeUser.clone(), data)
+}
+
+pub fn set_staking_split(
+    someUser: komodorpcutil::KomodoRPC,
+    split_percentage: f64,
+) -> Result<String, reqwest::Error> {
+    ///THE DOCUMENTATION IN DOCS.KOMODOPLATFORM.COM IS INCOMPLETE
+    let params = String::from("[") + &split_percentage.to_string() + "]";
+
+    let method_name: String = String::from("setstakingsplit");
+    let method_body: String = String::from(params);
+    let data: String = String::from(komodorpcutil::generate_body(
+        someUser.clone(),
+        method_name,
+        method_body,
+    ));
+
+    komodorpcutil::request(someUser.clone(), data)
 }

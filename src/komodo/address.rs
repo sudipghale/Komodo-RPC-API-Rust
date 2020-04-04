@@ -1,3 +1,4 @@
+#![allow(warnings)]
 use super::komodorpcutil;
 use komodorpcutil::KomodoRPC;
 
@@ -18,11 +19,9 @@ Name	    Type	     Description
 pub fn get_address_balance(
     someUser: komodorpcutil::KomodoRPC,
     v_address: Vec<String>,
-) -> Result<(), reqwest::Error> {
+) -> Result<String, reqwest::Error> {
     // implement for vec of addrs
-
     let mut addr_list = String::from("[");
-
     for addr in &v_address {
         addr_list = addr_list + "\"" + addr + "\"" + &","; //parsing error
     }
@@ -36,10 +35,7 @@ pub fn get_address_balance(
     addr_list = addr_list + &"]"; //& for String -> &string
 
     let params = String::from("[{\"addresses\": ") + &addr_list + "}]";
-    //let params = format!("[{\"addresses\": {0}}]", addr_list); //need to fix to use format
 
-    //BODY HAS TO BE
-    let payload= "{\"jsonrpc\": \"1.0\", \"id\":\"curltest\", \"method\": \"getaddressbalance\", \"params\": [{\"addresses\": [\"RFK5paVBsRdpdzc9wDYuNxAhmz61668Npr\"]}] }";
     let method_name: String = String::from("getaddressbalance");
     let method_body: String = String::from(params);
     let data: String = String::from(komodorpcutil::generate_body(
@@ -47,8 +43,6 @@ pub fn get_address_balance(
         method_name,
         method_body,
     ));
-    println!("match with:{:?}", payload);
-    println!("the body is{:?}", data);
     let result = komodorpcutil::request(someUser.clone(), data);
     return result;
 }
@@ -84,7 +78,7 @@ pub fn get_address_deltas(
     start: u32,
     end: u32,
     chainInfo: bool,
-) -> Result<(), reqwest::Error> {
+) -> Result<String, reqwest::Error> {
     let mut addr_list = String::from("[");
 
     for addr in &v_address {
@@ -109,9 +103,6 @@ pub fn get_address_deltas(
         + ",\"chainInfo\":"
         + &chainInfo.to_string()
         + "}]";
-    //let params = format!("[{\"addresses\": {0}}]", addr_list); //need to fix to use format
-
-    let payload="{\"jsonrpc\": \"1.0\", \"id\":\"curltest\", \"method\": \"getaddressdeltas\",\"params\": [{\"addresses\": [\"RG81GbnXb4rmASYuhgAdfUdFBVqyVbyhde\"],\"start\":1,\"end\":200,\"chainInfo\":true}]}\n\n\n";
 
     let method_name: String = String::from("getaddressdeltas");
     let method_body: String = String::from(params);
@@ -120,8 +111,6 @@ pub fn get_address_deltas(
         method_name,
         method_body,
     ));
-    println!("the payload is{}", payload);
-    println!("the body is{:?}", data);
     let result = komodorpcutil::request(someUser.clone(), data);
     return result;
 }
@@ -149,7 +138,7 @@ Name	    Type     	Description
 pub fn get_address_mem_pool(
     someUser: komodorpcutil::KomodoRPC,
     v_address: Vec<String>,
-) -> Result<(), reqwest::Error> {
+) -> Result<String, reqwest::Error> {
     let mut addr_list = String::from("[");
 
     for addr in &v_address {
@@ -174,8 +163,7 @@ pub fn get_address_mem_pool(
         method_name,
         method_body,
     ));
-    //  println!("the payload is{}",payload);
-    println!("the body is{:?}", data);
+
     let result = komodorpcutil::request(someUser.clone(), data);
     return result;
 }
@@ -202,7 +190,7 @@ pub fn get_address_tx_ids(
     v_address: Vec<String>,
     start: u32,
     end: u32,
-) -> Result<(), reqwest::Error> {
+) -> Result<String, reqwest::Error> {
     let mut addr_list = String::from("[");
 
     for addr in &v_address {
@@ -227,8 +215,6 @@ pub fn get_address_tx_ids(
         + "}]";
     //let params = format!("[{\"addresses\": {0}}]", addr_list); //need to fix to use format
 
-    let payload="{\"jsonrpc\": \"1.0\", \"id\":\"curltest\", \"method\": \"getaddresstxids\",\"params\": [{\"addresses\": [\"RG81GbnXb4rmASYuhgAdfUdFBVqyVbyhde\"],\"start\":1,\"end\":200}]}\n\n\n";
-
     let method_name: String = String::from("getaddresstxids");
     let method_body: String = String::from(params);
     let data: String = String::from(komodorpcutil::generate_body(
@@ -236,8 +222,6 @@ pub fn get_address_tx_ids(
         method_name,
         method_body,
     ));
-    println!("the payload is{}", payload);
-    println!("the body is{:?}", data);
     let result = komodorpcutil::request(someUser.clone(), data);
     return result;
 }
@@ -268,7 +252,7 @@ pub fn get_address_utxos(
     someUser: komodorpcutil::KomodoRPC,
     v_address: Vec<String>,
     chainInfo: bool,
-) -> Result<(), reqwest::Error> {
+) -> Result<String, reqwest::Error> {
     let mut addr_list = String::from("[");
 
     for addr in &v_address {
@@ -289,10 +273,6 @@ pub fn get_address_utxos(
         + ",\"chainInfo\":"
         + &chainInfo.to_string()
         + "}]";
-    //let params = format!("[{\"addresses\": {0}}]", addr_list); //need to fix to use format
-
-    let payload="{\"jsonrpc\": \"1.0\", \"id\":\"curltest\", \"method\": \"getaddressutxos\",\"params\": [{\"addresses\": [\"RG81GbnXb4rmASYuhgAdfUdFBVqyVbyhde\"],\"chainInfo\":true}]}\n\n\n";
-
     let method_name: String = String::from("getaddressutxos");
     let method_body: String = String::from(params);
     let data: String = String::from(komodorpcutil::generate_body(
@@ -300,8 +280,7 @@ pub fn get_address_utxos(
         method_name,
         method_body,
     ));
-    println!("the payload is{}", payload);
-    println!("the body is{:?}", data);
+
     let result = komodorpcutil::request(someUser.clone(), data);
     return result;
 }
@@ -335,7 +314,7 @@ Name	            Type            	Description
 pub fn get_snapshot(
     someUser: komodorpcutil::KomodoRPC,
     top: Option<u32>,
-) -> Result<(), reqwest::Error> {
+) -> Result<String, reqwest::Error> {
     //TODO: need to implement optinal arg
     let method_body: String;
     let temp_top = top.unwrap_or(0); //Default value is 0
@@ -348,17 +327,12 @@ pub fn get_snapshot(
     //let params = String::from("[") + &top.to_string()+"]";
 
     let method_name: String = String::from("getsnapshot");
-
-    let payload = "{\"jsonrpc\": \"1.0\", \"id\":\"curltest\", \"method\": \"getsnapshot\", \"params\": [\"5\"] }\n\n\n";
-
     let data: String = String::from(komodorpcutil::generate_body(
         someUser.clone(),
         method_name,
         method_body,
     ));
     //println!("the payload is{}",payload);
-    println!("the payload is{:?}", payload);
-    println!("the body is{:?}", data);
     let result = komodorpcutil::request(someUser.clone(), data);
     return result;
 }

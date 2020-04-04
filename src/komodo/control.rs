@@ -1,3 +1,4 @@
+#![allow(warnings)]
 /*
 Control
 The following RPC calls interact with the komodod software, and are made available through the komodo-cli software
@@ -34,7 +35,7 @@ Name	Type	Description
 "relayfee"	(numeric)	minimum relay fee for non-free transactions in COIN/kB
 "errors"	(string)	any error messages
 */
-pub fn get_info(SomeUser: komodorpcutil::KomodoRPC) -> Result<(), reqwest::Error> {
+pub fn get_info(SomeUser: komodorpcutil::KomodoRPC) -> Result<String, reqwest::Error> {
     let method_name: String = String::from("getinfo");
     let method_body: String = String::from("[]");
     let data: String = String::from(komodorpcutil::generate_body(
@@ -62,7 +63,7 @@ Name	Type	Description
 pub fn help(
     someUser: komodorpcutil::KomodoRPC,
     command: Option<String>,
-) -> Result<(), reqwest::Error> {
+) -> Result<String, reqwest::Error> {
     //TODO: need to implement optinal arg
     let method_body: String;
     let temp_command = command.unwrap_or("".to_string()); //Default value is 0
@@ -81,8 +82,7 @@ pub fn help(
         method_name,
         method_body,
     ));
-    //println!("the payload is{}",payload);
-    println!("the body is{:?}", data);
+
     let result = komodorpcutil::request(someUser.clone(), data);
     return result;
 }
@@ -103,7 +103,7 @@ Name	Type	Description
 Komodo server stopping
 [COIN] Komodo server stopping
  */
-pub fn stop(SomeUser: komodorpcutil::KomodoRPC) -> Result<(), reqwest::Error> {
+pub fn stop(SomeUser: komodorpcutil::KomodoRPC) -> Result<String, reqwest::Error> {
     let method_name: String = String::from("stop");
     let method_body: String = String::from("[]");
     let data: String = String::from(komodorpcutil::generate_body(

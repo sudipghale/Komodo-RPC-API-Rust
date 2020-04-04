@@ -1,3 +1,4 @@
+#![allow(warnings)]
 //!
 //! This is the documentation for 'Util' module of Komodo.
 //!
@@ -54,26 +55,26 @@ use super::komodorpcutil;
 /// ```
 /// %%%
 pub fn create_multisig(
+    //THE DEVELOPERS.KOMODOPLATFORM.COM DOESN'T PROVIDE AN EXAMPLE TO IMPLEMENT THE PARAMETERS FOR THE API
     some_user: komodorpcutil::KomodoRPC,
     number_required: u32,
     keys: String,
-) -> Result<(), reqwest::Error> {
+) -> Result<String, reqwest::Error> {
     let method_name: String = String::from("createmultisig");
 
     let method_body: String = String::from("[")
         + &number_required.to_string()
-        + &String::from(",")
+        + &String::from(",[\"")
         + &keys.to_string()
-        + &String::from("]");
+        + &String::from("\"]]");
 
     let data: String = String::from(komodorpcutil::generate_body(
         some_user.clone(),
         method_name,
         method_body,
     ));
-    
+
     komodorpcutil::request(some_user.clone(), data)
-    
 }
 
 ///
@@ -82,7 +83,7 @@ pub fn create_multisig(
 /// # Arguments
 ///
 /// * `scriptPubKey` - (string) 	the hex-string format scriptPubKey of the type : nulldata in the vout of a transaction produced by a CC module
-/// 
+///
 /// # Response
 ///
 /// * `result` 	(string) 	whether the call succeeded
@@ -94,7 +95,7 @@ pub fn create_multisig(
 pub fn decode_ccopret(
     some_user: komodorpcutil::KomodoRPC,
     script_pub_key: String,
-) -> Result<(), reqwest::Error> {
+) -> Result<String, reqwest::Error> {
     let method_name: String = String::from("decodeccopret");
 
     let method_body: String =
@@ -105,19 +106,18 @@ pub fn decode_ccopret(
         method_name,
         method_body,
     ));
-    
+
     komodorpcutil::request(some_user.clone(), data)
-    
 }
 
 ///
-/// The estimatefee method estimates the approximate fee per kilobyte. The method is needed for a transaction to begin confirmation within nblocks blocks. 
+/// The estimatefee method estimates the approximate fee per kilobyte. The method is needed for a transaction to begin confirmation within nblocks blocks.
 /// The value -1.0 is returned if not enough transactions and blocks have been observed to make an estimate.
 ///
 /// # Arguments
 ///
 /// * `nblocks` 	(numeric) 	the number of blocks within which the fee should be tested
-/// 
+///
 /// # Response
 ///
 /// * `n` 	(numeric) 	the estimated fee
@@ -125,7 +125,7 @@ pub fn decode_ccopret(
 pub fn estimate_fee(
     some_user: komodorpcutil::KomodoRPC,
     n_blocks: u32,
-) -> Result<(), reqwest::Error> {
+) -> Result<String, reqwest::Error> {
     let method_name: String = String::from("estimatefee");
 
     let method_body: String = String::from("[") + &n_blocks.to_string() + &String::from("]");
@@ -135,9 +135,8 @@ pub fn estimate_fee(
         method_name,
         method_body,
     ));
-    
+
     komodorpcutil::request(some_user.clone(), data)
-    
 }
 
 ///
@@ -147,7 +146,7 @@ pub fn estimate_fee(
 /// # Arguments
 ///
 /// * `nblocks` 	(numeric) 	a statement indicating within how many blocks the transaction should be confirmed
-/// 
+///
 /// # Response
 ///
 /// * `n` 	(numeric) 	the estimated priority
@@ -155,7 +154,7 @@ pub fn estimate_fee(
 pub fn estimate_priority(
     some_user: komodorpcutil::KomodoRPC,
     n_blocks: u32,
-) -> Result<(), reqwest::Error> {
+) -> Result<String, reqwest::Error> {
     let method_name: String = String::from("estimatepriority");
 
     let method_body: String = String::from("[") + &n_blocks.to_string() + &String::from("]");
@@ -165,18 +164,17 @@ pub fn estimate_priority(
         method_name,
         method_body,
     ));
-    
+
     komodorpcutil::request(some_user.clone(), data)
-    
 }
 
 ///
 /// The invalidateblock method permanently marks a block as invalid, as if it violated a consensus rule.
-/// 
+///
 /// # Arguments
 ///
 /// * `hash` 	(string, required) 	the hash of the block to mark as invalid
-/// 
+///
 /// # Response
 ///
 /// * No response
@@ -184,7 +182,7 @@ pub fn estimate_priority(
 pub fn invalidate_block(
     some_user: komodorpcutil::KomodoRPC,
     hash: String,
-) -> Result<(), reqwest::Error> {
+) -> Result<String, reqwest::Error> {
     let method_name: String = String::from("invalidateblock");
 
     let method_body: String = String::from("[\"") + &hash.to_string() + &String::from("\"]");
@@ -194,18 +192,17 @@ pub fn invalidate_block(
         method_name,
         method_body,
     ));
-    
+
     komodorpcutil::request(some_user.clone(), data)
-    
 }
 
 ///
 /// The reconsiderblock method removes invalidity status of a block and its descendants, reconsidering them for activation. This can be used to undo the effects of the invalidateblock method.
-/// 
+///
 /// # Arguments
 ///
 /// * `hash` 	(string, required) 	the hash of the block to reconsider
-/// 
+///
 /// # Response
 ///
 /// * No response
@@ -213,7 +210,7 @@ pub fn invalidate_block(
 pub fn reconsider_block(
     some_user: komodorpcutil::KomodoRPC,
     hash: String,
-) -> Result<(), reqwest::Error> {
+) -> Result<String, reqwest::Error> {
     let method_name: String = String::from("reconsiderblock");
 
     let method_body: String = String::from("[\"") + &hash.to_string() + &String::from("\"]");
@@ -223,20 +220,19 @@ pub fn reconsider_block(
         method_name,
         method_body,
     ));
-    
+
     komodorpcutil::request(some_user.clone(), data)
-    
 }
 
 ///
 /// The txnotarizedconfirmed method returns information about a transaction's state of confirmation.
 /// If the transaction is on a chain that has Komodo's dPoW security service, the method returns true if the transaction is notarized.
 /// If the chain does not have dPoW, the method returned true if the confirmation number is greater than 60.
-/// 
+///
 /// # Arguments
 ///
 /// * `txid` 	(string, required) 	the transaction id
-/// 
+///
 /// # Response
 ///
 /// * `result` 	(boolean) 	whether the transaction is confirmed, for dPoW-based chains; for non-dPoW chains, the value indicates whether the transaction has 60 or more confirmations
@@ -244,7 +240,7 @@ pub fn reconsider_block(
 pub fn tx_notarized_confirmed(
     some_user: komodorpcutil::KomodoRPC,
     tx_id: String,
-) -> Result<(), reqwest::Error> {
+) -> Result<String, reqwest::Error> {
     let method_name: String = String::from("txnotarizedconfirmed");
 
     let method_body: String = String::from("[\"") + &tx_id.to_string() + &String::from("\"]");
@@ -254,18 +250,17 @@ pub fn tx_notarized_confirmed(
         method_name,
         method_body,
     ));
-    
+
     komodorpcutil::request(some_user.clone(), data)
-    
 }
 
 ///
 /// The validateaddress method returns information about the given address.
-/// 
+///
 /// # Arguments
 ///
 /// * `address` 	(string, required) 	the address to validate
-/// 
+///
 /// # Response
 ///
 /// * `isvalid` 	(boolean) 	indicates whether the address is valid. If it is not, this is the only property returned.
@@ -280,7 +275,7 @@ pub fn tx_notarized_confirmed(
 pub fn validate_address(
     some_user: komodorpcutil::KomodoRPC,
     address: String,
-) -> Result<(), reqwest::Error> {
+) -> Result<String, reqwest::Error> {
     let method_name: String = String::from("validateaddress");
 
     let method_body: String = String::from("[\"") + &address.to_string() + &String::from("\"]");
@@ -290,20 +285,19 @@ pub fn validate_address(
         method_name,
         method_body,
     ));
-    
+
     komodorpcutil::request(some_user.clone(), data)
-    
 }
 
 ///
 /// The verifymessage method verifies a signed message.
-/// 
+///
 /// # Arguments
 ///
 /// * `address` 	(string, required) 	the address to use for the signature
 /// * `signature` 	(string, required) 	the signature provided by the signer in base 64 encoding
 /// * `message` 	(string, required) 	the message that was signed
-/// 
+///
 /// # Response
 ///
 /// * `true` or `false` 	(boolean) 	indicates whether the signature is verified
@@ -313,7 +307,7 @@ pub fn verify_message(
     address: String,
     signature: String,
     message: String,
-) -> Result<(), reqwest::Error> {
+) -> Result<String, reqwest::Error> {
     let method_name: String = String::from("verifymessage");
 
     let method_body: String = String::from("[\"")
@@ -329,18 +323,17 @@ pub fn verify_message(
         method_name,
         method_body,
     ));
-    
+
     komodorpcutil::request(some_user.clone(), data)
-    
 }
 
 ///
 /// The z_validateaddress method returns information about the given z address.
-/// 
+///
 /// # Arguments
 ///
 /// * `zaddr` 	(string, required) 	the z address to validate
-/// 
+///
 /// # Response
 ///
 /// * `isvalid` 	(boolean) 	indicates whether the address is valid; if not, this is the only property returned
@@ -352,7 +345,7 @@ pub fn verify_message(
 pub fn z_validate_address(
     some_user: komodorpcutil::KomodoRPC,
     z_addr: String,
-) -> Result<(), reqwest::Error> {
+) -> Result<String, reqwest::Error> {
     let method_name: String = String::from("z_validateaddress");
 
     let method_body: String = String::from("[\"") + &z_addr.to_string() + &String::from("\"]");
@@ -362,7 +355,6 @@ pub fn z_validate_address(
         method_name,
         method_body,
     ));
-    
+
     komodorpcutil::request(some_user.clone(), data)
-    
 }

@@ -165,7 +165,7 @@ pub fn generate_body(
                 Error Codes - containing the error in the HTTP request
 */
 
-pub fn request(some_user: KomodoRPC, body_input: String) -> Result<(), reqwest::Error> {
+pub fn request(some_user: KomodoRPC, body_input: String) -> Result<String, reqwest::Error> {
     if some_user.get_username().trim() != "" {
         let mut headers = HeaderMap::new();
         headers.insert(CONTENT_TYPE, "text/plain;".parse().unwrap());
@@ -182,9 +182,9 @@ pub fn request(some_user: KomodoRPC, body_input: String) -> Result<(), reqwest::
             .send()?
             .text()?;
         println!("the result is{}", res);
-        Ok(())
+        return Ok(res);
     } else {
         println!("Error");
-        return Ok(());
+        return Ok("Error".to_string());
     }
 }
